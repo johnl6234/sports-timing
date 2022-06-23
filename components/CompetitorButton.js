@@ -17,9 +17,7 @@ import { convertMsToTime } from '../utils';
 const CompetitorButton = props => {
 	const [isDisabled, setIsDisabled] = useState();
 	const [event, setEvent] = useState(dataStore.events[0]);
-	console.log('events', dataStore.events);
 	const switchSport = () => {
-		console.log('start', dataStore.startTime);
 		let number = props.number;
 		let events = dataStore.events;
 
@@ -38,7 +36,6 @@ const CompetitorButton = props => {
 						setIsDisabled(true);
 						competitor.times.stop = Date.now();
 					}
-					console.log('times', competitor.times);
 				}
 			});
 		}

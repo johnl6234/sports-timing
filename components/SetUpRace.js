@@ -30,7 +30,12 @@ export default function SetUpRace({ navigation }) {
 		}
 	};
 	const onFinish = () => {
-		dataStore.events = events;
+		let newEvents = events;
+		newEvents.push({
+			name: 'stop',
+			type: 'stop',
+		});
+		dataStore.events = newEvents;
 		navigation.navigate('addCompetitor');
 	};
 	const renderItem = ({ item }) => (

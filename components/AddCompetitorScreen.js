@@ -24,7 +24,6 @@ export default function AddCompetitorScreen({ navigation }) {
 			onChangeNumber(null);
 			setData(dataStore.competitors);
 		}
-		console.log('data', dataStore.competitors);
 	};
 	const renderItem = ({ item }) => (
 		<Text style={styles.competitor}>

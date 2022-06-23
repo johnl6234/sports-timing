@@ -66,7 +66,7 @@ export default function RaceScreen({ navigation }) {
 	};
 
 	const calculateTimes = times => {
-		let newEvents = ['startTime', ...dataStore.events];
+		let newEvents = [{ name: 'startTime' }, ...dataStore.events];
 		let laps;
 		// if timer stopped for racer overall time == stop - start in ms
 		if ('stop' in times) {
@@ -80,10 +80,9 @@ export default function RaceScreen({ navigation }) {
 		}
 		for (let i = 1; i < newEvents.length - 1; i++) {
 			// for each event listed including start(0) and stop(length -1) times
-			laps[`lap-${newEvents[i]}`] =
-				times[newEvents[i]] - times[newEvents[i - 1]];
+			laps[newEvents[i].name] =
+				times[newEvents[i].name] - times[newEvents[i - 1].name];
 		}
-		console.log('laps', laps);
 		return laps;
 	};
 
