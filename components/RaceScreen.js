@@ -17,21 +17,16 @@ export default function RaceScreen({ navigation }) {
 	const [buttons, setButtons] = useState([]);
 	const [showStart, setShowStart] = useState(false);
 
-	useEffect(() => {
-		console.log('updated');
-	});
-
 	if (buttons.length < 1) {
-		console.log('built buttons');
-		for (let i = 1; i <= 30; i++) {
+		dataStore.competitors.forEach(competitor =>
 			buttons.push(
-				<CompetitorButton isDisabled={!showStart} key={i} number={i} />
-			);
-			dataStore.competitors.push({
-				name: `testName ${i}`,
-				number: i,
-			});
-		}
+				<CompetitorButton
+					isDisabled={!showStart}
+					key={competitor.number}
+					number={competitor.number}
+				/>
+			)
+		);
 	}
 
 	const StartTimer = () => {
@@ -50,7 +45,6 @@ export default function RaceScreen({ navigation }) {
 		let DNFArray = [];
 		for (let index in dataStore.competitors) {
 			let competitor = dataStore.competitors[index];
-			console.log('comp', competitor);
 			let laps = calculateTimes(competitor.times);
 			if (laps.overall !== 'DNF') {
 				results.push({
@@ -72,9 +66,9 @@ export default function RaceScreen({ navigation }) {
 	};
 
 	const calculateTimes = times => {
-		console.log('times', times);
-		let events = dataStore.events;
+		let newEvents = ['startTime', ...dataStore.events];
 		let laps;
+		// if timer stopped for racer overall time == stop - start in ms
 		if ('stop' in times) {
 			laps = {
 				overall: times.stop - times.startTime,
@@ -84,9 +78,12 @@ export default function RaceScreen({ navigation }) {
 				overall: 'DNF',
 			};
 		}
-		for (let i = 0; i < events.length - 1; i++) {
-			laps[`lap-${i + 1}`] = times[events[i + 1]] - times[events[i]];
+		for (let i = 1; i < newEvents.length - 1; i++) {
+			// for each event listed including start(0) and stop(length -1) times
+			laps[`lap-${newEvents[i]}`] =
+				times[newEvents[i]] - times[newEvents[i - 1]];
 		}
+		console.log('laps', laps);
 		return laps;
 	};
 

@@ -5,50 +5,43 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
+	TouchableOpacity,
 	View,
 } from 'react-native';
 
-const ResultItem = ({ result }) => (
-	<View style={styles.item}>
-		<Text style={styles.title}>{result.name}</Text>
-		<Text style={styles.title}>
-			{result.results.overall === 'DNF'
-				? result.results.overall
-				: convertMsToTime(result.results.overall)}
-		</Text>
-	</View>
+import { convertMsToTime } from '../utils';
+
+const ResultItem = ({ result, onPress }) => (
+	<TouchableOpacity style={styles.item} onPress={onPress}>
+		<View>
+			<Text style={styles.number}>{result.number}</Text>
+		</View>
+		<View>
+			<Text style={styles.title}>{result.name}</Text>
+			<Text style={styles.time}>
+				{result.results.overall === 'DNF'
+					? result.results.overall
+					: convertMsToTime(result.results.overall)}
+			</Text>
+		</View>
+	</TouchableOpacity>
 );
-
 export default ResultItem;
-function padTo2Digits(num) {
-	return num.toString().padStart(2, '0');
-}
-function convertMsToTime(milliseconds) {
-	let seconds = Math.floor(milliseconds / 1000);
-	let minutes = Math.floor(seconds / 60);
-	let hours = Math.floor(minutes / 60);
 
-	seconds = seconds % 60;
-	minutes = minutes % 60;
-
-	// 👇️ If you don't want to roll hours over, e.g. 24 to 00
-	// 👇️ comment (or remove) the line below
-	// commenting next line gets you `24:00:00` instead of `00:00:00`
-	// or `36:15:31` instead of `12:15:31`, etc.
-	hours = hours % 24;
-
-	return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}:${padTo2Digits(
-		seconds
-	)}`;
-}
 const styles = StyleSheet.create({
 	item: {
-		backgroundColor: '#f9c2ff',
+		backgroundColor: '#3068c9',
 		padding: 20,
 		marginVertical: 8,
 		marginHorizontal: 16,
+		display: 'flex',
+		flexDirection: 'row',
 	},
-	title: {
-		fontSize: 15,
+	title: { color: 'white' },
+	time: { color: 'white' },
+	number: {
+		color: 'white',
+		padding: 5,
+		marginRight: 10,
 	},
 });

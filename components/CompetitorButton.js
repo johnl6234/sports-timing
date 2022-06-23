@@ -13,11 +13,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import dataStore from '../Data';
 
 const sportsIcons = ['swimmer', 'bicycle', 'running'];
-
+import { convertMsToTime } from '../utils';
 const CompetitorButton = props => {
 	const [isDisabled, setIsDisabled] = useState();
 	const [event, setEvent] = useState(dataStore.events[0]);
-
+	console.log('events', dataStore.events);
 	const switchSport = () => {
 		console.log('start', dataStore.startTime);
 		let number = props.number;
@@ -27,17 +27,20 @@ const CompetitorButton = props => {
 		if (dataStore.startTime !== null) {
 			dataStore.competitors.forEach(competitor => {
 				if (competitor.number === number) {
-					console.log(
-						'length',
-						Object.keys(competitor.times).length - 1
-					);
+					// register event name with time
 					competitor.times[
-						events[Object.keys(competitor.times).length - 1]
+						events[Object.keys(competitor.times).length - 1].name
 					] = Date.now();
+					// change event type for icon
 					setEvent(events[Object.keys(competitor.times).length - 1]);
+					if (event.name === events[events.length - 2].name) {
+						setEvent('stop');
+						setIsDisabled(true);
+						competitor.times.stop = Date.now();
+					}
+					console.log('times', competitor.times);
 				}
 			});
-			if (event === 'stop') setIsDisabled(true);
 		}
 	};
 
@@ -45,9 +48,9 @@ const CompetitorButton = props => {
 		<TouchableOpacity
 			key={props.isDisabled}
 			disabled={isDisabled}
-			style={[styles.button, styles[event]]}
+			style={[styles.button, styles[event.type]]}
 			onPress={switchSport}>
-			<Icon style={styles.text} name={event} />
+			<Icon style={styles.text} name={event.type} />
 			<Text style={styles.text}>{props.number}</Text>
 		</TouchableOpacity>
 	);

@@ -17,6 +17,10 @@ const test = {
 		number: 22,
 		times: {
 			startTime: 1655988335868,
+			eventA: '00000000000',
+			eventB: ' 00000000000',
+			eventC: '00000000000',
+			stop: '00000000',
 		},
 	},
 };

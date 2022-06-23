@@ -12,21 +12,20 @@ import {
 
 import ResultItem from './ResultItem';
 
-export default function RaceScreen({ navigation, route }) {
+export default function ResultsScreen({ navigation, route }) {
 	const [results, setResults] = useState(route.params.results);
 
 	const renderItem = ({ item }) => (
-		<ResultItem key={item.number} result={item} />
+		<ResultItem onPress={() => ShowDetails(item.number)} result={item} />
 	);
-
+	const ShowDetails = raceNumber => {
+		let competitor = results.find(res => res.number === raceNumber);
+		navigation.navigate('details', { details: competitor });
+	};
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar style="auto" />
 			<Text>Results here</Text>
-			<Button
-				title="Go to Details"
-				onPress={() => navigation.navigate('race')}
-			/>
 			<FlatList
 				data={results}
 				renderItem={renderItem}
