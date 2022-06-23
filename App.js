@@ -1,33 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
-	const switchSport = e => {
-		console.log('number', e);
-	};
+import RaceScreen from './components/RaceScreen';
+import ResultsScreen from './components/ResultsScreen';
 
-	let buttons = [];
-	for (let i = 0; i < 10; i++) {
-		buttons.push(
-			<Button
-				onPress={() => switchSport(i)}
-				name={`${i}`}
-				title={`${i}`}
-			/>
-		);
-	}
+const Stack = createNativeStackNavigator();
 
+function App() {
 	return (
-		<View style={styles.container}>
-			<StatusBar style="auto" />
-			<View style={styles.container}></View>
-		</View>
+		<NavigationContainer>
+			<Stack.Navigator>
+				<Stack.Screen name="race" component={RaceScreen} />
+				<Stack.Screen name="results" component={ResultsScreen} />
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 20,
-	},
-});
+export default App;
