@@ -1,20 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	const switchSport = e => {
+		console.log('number', e);
+	};
+
+	let buttons = [];
+	for (let i = 0; i < 10; i++) {
+		buttons.push(
+			<Button
+				onPress={() => switchSport(i)}
+				name={`${i}`}
+				title={`${i}`}
+			/>
+		);
+	}
+
+	return (
+		<View style={styles.container}>
+			<StatusBar style="auto" />
+			<View style={styles.container}></View>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+	container: {
+		flex: 1,
+		padding: 20,
+	},
 });
