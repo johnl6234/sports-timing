@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import {
 	Button,
 	FlatList,
@@ -6,6 +7,7 @@ import {
 	StyleSheet,
 	Text,
 	TextInput,
+	TouchableOpacity,
 	View,
 } from 'react-native';
 
@@ -13,26 +15,58 @@ import dataStore from '../Data';
 export default function AddCompetitorScreen({ navigation }) {
 	const [text, onChangeText] = useState('');
 	const [number, onChangeNumber] = useState(null);
-	const [data, setData] = useState(dataStore.competitors);
+	const [data, setData] = useState(
+		dataStore[dataStore.startType].competitors
+	);
+	const [message, setMessage] = useState('');
+	const [refresh, setRefresh] = useState(true);
+	useEffect(() => {
+		setData(dataStore[dataStore.startType].competitors);
+	});
 	const AddName = () => {
 		if (text !== '' && number !== null) {
-			dataStore.competitors.push({
-				name: text,
-				number: number,
-			});
+			let index = dataStore[dataStore.startType].competitors.findIndex(
+				comp => comp.number == number
+			);
+			if (index < 0) {
+				dataStore[dataStore.startType].competitors.push({
+					name: text,
+					number: number,
+					racing: true,
+				});
+				dataStore[dataStore.startType].competitors.sort(
+					(a, b) => a.number - b.number
+				);
+				setData(dataStore[dataStore.startType].competitors);
+				setMessage('');
+			} else {
+				setMessage('Number already in use');
+			}
 			onChangeText('');
 			onChangeNumber(null);
-			setData(dataStore.competitors);
 		}
 	};
+	const toggleRacing = number => {
+		let index = dataStore[dataStore.startType].competitors.findIndex(
+			comp => comp.number === number
+		);
+		dataStore[dataStore.startType].competitors[index].racing =
+			!dataStore[dataStore.startType].competitors[index].racing;
+		setData(dataStore[dataStore.startType].competitors);
+		setRefresh(refresh => !refresh);
+	};
 	const renderItem = ({ item }) => (
-		<Text style={styles.competitor}>
-			{item.number}: {item.name}
-		</Text>
+		<TouchableOpacity onPress={() => toggleRacing(item.number)}>
+			<Text style={[styles.competitor, item.racing ? styles.racing : '']}>
+				{item.number}: {item.name}
+			</Text>
+		</TouchableOpacity>
 	);
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<StatusBar style="light" />
+			<Text style={styles.message}>{message}</Text>
 			<TextInput
 				style={styles.input}
 				onChangeText={onChangeText}
@@ -53,6 +87,7 @@ export default function AddCompetitorScreen({ navigation }) {
 				data={data}
 				renderItem={renderItem}
 				keyExtractor={item => item.number}
+				extraData={refresh}
 			/>
 			<Button
 				title="finish"
@@ -83,6 +118,12 @@ const styles = StyleSheet.create({
 		padding: 10,
 		color: 'white',
 		borderRadius: 10,
+		backgroundColor: 'red',
+	},
+	racing: {
 		backgroundColor: 'green',
+	},
+	message: {
+		color: 'red',
 	},
 });
