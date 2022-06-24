@@ -56,7 +56,7 @@ export default function AddCompetitorScreen({ navigation }) {
 			/>
 			<Button
 				title="finish"
-				onPress={() => navigation.navigate('race')}
+				onPress={() => navigation.navigate('raceStack')}
 			/>
 		</SafeAreaView>
 	);
