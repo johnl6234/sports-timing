@@ -86,7 +86,7 @@ export default function ResultsScreen({ navigation }) {
 				csv += res.results.overall + '\n';
 			}
 		});
-		//csv.replace('NaN:NaN:NaN', 'DNF');
+
 		csvHeader += csv;
 		let date = new Date(Date.now()).toISOString().split('T');
 		let newDate = date[0].split('-').join('');
