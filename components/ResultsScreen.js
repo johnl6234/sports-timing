@@ -17,6 +17,7 @@ import * as Permissions from 'expo-permissions';
 import { convertMsToTime } from '../utils';
 import dataStore from '../Data';
 import ResultItem from './ResultItem';
+import { addToResults } from '../localStorage';
 
 export default function ResultsScreen({ navigation }) {
 	const [results, setResults] = useState(dataStore.results);
@@ -29,24 +30,32 @@ export default function ResultsScreen({ navigation }) {
 		// Return the function to unsubscribe from the event so it gets removed on unmount
 		return unsubscribe;
 	}, [navigation]);
-	const renderItem = ({ item }) => (
-		<ResultItem onPress={() => ShowDetails(item.number)} result={item} />
+	const renderItem = ({ item, index }) => (
+		<ResultItem
+			onPress={() => ShowDetails(item.number)}
+			result={item}
+			index={index + 1}
+		/>
 	);
 	const ShowDetails = raceNumber => {
 		let competitor = results.find(res => res.number === raceNumber);
 		navigation.navigate('details', { details: competitor });
 	};
 	const checkEnd = () => {
-		Alert.alert('Save Result?', '', [
-			{ text: 'Cancel', style: 'cancel', onPress: () => {} },
-			{
-				text: 'Save',
-				style: 'destructive',
-				// If the user confirmed, then we dispatch the action we blocked earlier
-				// This will continue the action that had triggered the removal of the screen
-				onPress: saveResults,
-			},
-		]);
+		Alert.alert(
+			'Export Result?',
+			'This will Export results as a .csv file and clear all data',
+			[
+				{ text: 'Cancel', style: 'cancel', onPress: () => {} },
+				{
+					text: 'Save',
+					style: 'destructive',
+					// If the user confirmed, then we dispatch the action we blocked earlier
+					// This will continue the action that had triggered the removal of the screen
+					onPress: saveResults,
+				},
+			]
+		);
 	};
 	const saveResults = async () => {
 		let csvHeader = 'name,number,';
@@ -86,18 +95,31 @@ export default function ResultsScreen({ navigation }) {
 		let date = new Date(Date.now()).toISOString().split('T');
 		let newDate = date[0].split('-').join('');
 		saveFile(newDate, csvHeader);
+		let saveData = {
+			data: newDate,
+			results: dataStore.results,
+		};
+		let done = await addToResults(saveData);
+		if (done === true) {
+			dataStore[dataStore.startType].competitors.forEach(
+				comp => (comp.racing = false)
+			);
+			dataStore.competitors = [];
+			dataStore.results = [];
+			navigation.navigate('setUpRace');
+		}
 	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar style="light" />
-			<Text>Results here</Text>
 			<FlatList
 				data={results}
 				renderItem={renderItem}
 				keyExtractor={item => item.number}
 			/>
 			<View style={styles.buttonContainer}>
-				<Button color="red" title="End Session" onPress={checkEnd} />
+				<Button color="red" title="Export results" onPress={checkEnd} />
 			</View>
 		</SafeAreaView>
 	);
@@ -117,7 +139,7 @@ const saveFile = async (filename, file) => {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#000',
+		backgroundColor: '#0A043C',
 		flex: 1,
 		padding: 20,
 	},
