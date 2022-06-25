@@ -10,6 +10,7 @@ import ResultsScreen from './components/ResultsScreen';
 import DetailsScreen from './components/DetailsScreen';
 import AddCompetitorScreen from './components/AddCompetitorScreen';
 import SetUpRaceScreen from './components/SetUpRace';
+import { getCompetitorData } from './localStorage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -40,7 +41,9 @@ function RaceStack() {
 		</Tab.Navigator>
 	);
 }
+
 function App() {
+	getCompetitorData();
 	return (
 		<NavigationContainer>
 			<Stack.Navigator

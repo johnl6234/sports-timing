@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import dataStore from '../Data';
+import { storeData } from '../localStorage';
 export default function AddCompetitorScreen({ navigation }) {
 	const [text, onChangeText] = useState('');
 	const [number, onChangeNumber] = useState(null);
@@ -44,6 +45,10 @@ export default function AddCompetitorScreen({ navigation }) {
 			}
 			onChangeText('');
 			onChangeNumber(null);
+			storeData(
+				dataStore.startType,
+				dataStore[dataStore.startType].competitors
+			);
 		}
 	};
 	const toggleRacing = number => {
