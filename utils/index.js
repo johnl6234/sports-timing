@@ -35,3 +35,10 @@ export const calculateTimes = times => {
 	}
 	return laps;
 };
+
+export const convertDate = str => {
+	let date = str.split('');
+	date.splice(4, 0, '/');
+	date.splice(7, 0, '/');
+	return date.join('');
+};
