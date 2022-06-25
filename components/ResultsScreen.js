@@ -97,6 +97,7 @@ export default function ResultsScreen({ navigation }) {
 		saveFile(newDate, csvHeader);
 		let saveData = {
 			data: newDate,
+			type: dataStore.startType,
 			results: dataStore.results,
 		};
 		let done = await addToResults(saveData);
