@@ -33,7 +33,6 @@ export default function CliffPrattScreen({ navigation }) {
 		let list = startGroup.map(e => e);
 		if (!list.some(e => e.number === _comp.number)) list.push(_comp);
 		setStartGroup(list);
-		console.log('group', startGroup);
 	};
 	const StartTimer = () => {
 		let list = startGroup.map(comp => comp); // list of runners to set off
@@ -49,13 +48,10 @@ export default function CliffPrattScreen({ navigation }) {
 			let index = buttonList.findIndex(
 				button => button.number == competitor.number
 			);
-			console.log('button index', index);
 			buttonList.splice(index, 1);
-			console.log('button', buttonList[index]);
 		});
 
 		dataStore.competitors.push(...list);
-		console.log('comps', dataStore.competitors);
 		buttons.sort((a, b) => a.number - b.number);
 		const emptyList = [];
 		if (buttonList.length > 0) setGroupButtons(buttonList);
@@ -98,7 +94,6 @@ export default function CliffPrattScreen({ navigation }) {
 				<StatusBar style="light" />
 				<View style={styles.buttonContainer}>
 					{buttons.map(competitor => {
-						console.log('comp render', competitor);
 						return (
 							<CompetitorButton
 								isDisabled={!showStart}
@@ -120,7 +115,6 @@ export default function CliffPrattScreen({ navigation }) {
 
 				<View style={styles.buttonContainer}>
 					{groupButtons.map(competitor => {
-						console.log('group render', competitor);
 						return (
 							<TouchableOpacity
 								key={competitor.number}

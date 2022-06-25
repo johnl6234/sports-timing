@@ -23,7 +23,6 @@ export default function ResultsScreen({ navigation }) {
 	const [refresh, setRefresh] = useState(true);
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			console.log('refresh');
 			setRefresh(refresh => !refresh);
 		});
 
@@ -38,7 +37,6 @@ export default function ResultsScreen({ navigation }) {
 		navigation.navigate('details', { details: competitor });
 	};
 	const checkEnd = () => {
-		console.log('end');
 		Alert.alert('Save Result?', '', [
 			{ text: 'Cancel', style: 'cancel', onPress: () => {} },
 			{
@@ -51,7 +49,6 @@ export default function ResultsScreen({ navigation }) {
 		]);
 	};
 	const saveResults = async () => {
-		console.log('save');
 		let csvHeader = 'name,number,';
 		dataStore.events.forEach(event => {
 			if (event.name !== 'stop') {
@@ -63,9 +60,7 @@ export default function ResultsScreen({ navigation }) {
 		dataStore.results.forEach(res => {
 			csv += res.name + ',';
 			csv += res.number + ',';
-			console.log('res', res);
 			for (let i = 0; i < dataStore.events.length; i++) {
-				console.log('eventName', dataStore.events[i].name);
 				if (dataStore.events[i].name == 'stop') break;
 				//check results for DNF
 				if (
@@ -90,7 +85,6 @@ export default function ResultsScreen({ navigation }) {
 		csvHeader += csv;
 		let date = new Date(Date.now()).toISOString().split('T');
 		let newDate = date[0].split('-').join('');
-		console.log('date', csvHeader);
 		saveFile(newDate, csvHeader);
 	};
 	return (
@@ -111,10 +105,8 @@ export default function ResultsScreen({ navigation }) {
 
 const saveFile = async (filename, file) => {
 	const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-	console.log('status', status);
 	if (status === 'granted') {
 		let fileUri = FileSystem.documentDirectory + '/' + filename + '.csv';
-		console.log('file uri', fileUri);
 		await FileSystem.writeAsStringAsync(fileUri, file, {
 			encoding: FileSystem.EncodingType.UTF8,
 		});

@@ -79,7 +79,6 @@ export default function AddCompetitorScreen({ navigation }) {
 		);
 		dataStore[dataStore.startType].competitors.splice(index, 1);
 		setRefresh(refresh => !refresh);
-		console.log('remove', number);
 	};
 	const renderItem = ({ item }) => (
 		<TouchableOpacity

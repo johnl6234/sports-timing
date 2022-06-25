@@ -6,9 +6,7 @@ import dataStore from '../Data';
 
 export default function RaceScreen({ navigation }) {
 	useEffect(() => {
-		const unsubscribe = navigation.addListener('focus', () => {
-			console.log('updated', dataStore.events);
-		});
+		const unsubscribe = navigation.addListener('focus', () => {});
 		return unsubscribe;
 	}, [navigation]);
 	if (dataStore.startType === 'humberRunner') {

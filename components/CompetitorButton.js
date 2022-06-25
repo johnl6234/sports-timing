@@ -19,7 +19,6 @@ const CompetitorButton = props => {
 	const switchSport = () => {
 		let number = props.number;
 		let events = dataStore.events;
-		console.log('events array', dataStore.events);
 		//Add event and time to data
 		if (
 			dataStore.startType === 'cliffPratt' ||
@@ -33,10 +32,9 @@ const CompetitorButton = props => {
 					] = Date.now();
 					// change event type for icon
 					setEvent(events[Object.keys(competitor.times).length - 1]);
-					console.log('times', competitor.times);
-					console.log('events', event);
+
 					if (event.name === events[events.length - 2].name) {
-						setEvent('stop');
+						setEvent({ type: 'flag-checkered' });
 						setIsDisabled(true);
 						competitor.times.stop = Date.now();
 						let laps = calculateTimes(competitor.times);
@@ -54,12 +52,18 @@ const CompetitorButton = props => {
 		}
 	};
 
+	const markDNF = number => {
+		setEvent({ type: 'stop' });
+		setIsDisabled(true);
+	};
+
 	return (
 		<TouchableOpacity
 			key={props.isDisabled}
 			disabled={isDisabled}
 			style={[styles.button, styles[event.type]]}
-			onPress={switchSport}>
+			onPress={switchSport}
+			onLongPress={() => markDNF(props.number)}>
 			<Icon style={styles.text} name={event.type} />
 			<Text style={styles.text}>{props.number}</Text>
 		</TouchableOpacity>
