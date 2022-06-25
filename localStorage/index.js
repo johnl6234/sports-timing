@@ -3,10 +3,16 @@ import dataStore from '../Data';
 
 export const getCompetitorData = async () => {
 	let prattResults = await getData('cliffPratt');
-	console.log('prattResults', prattResults);
-	//dataStore.cliffPratt.competitors = results;
+	if (prattResults !== null) {
+		prattResults.forEach(element => {
+			element.racing = false;
+		});
+		dataStore.cliffPratt.competitors = prattResults;
+	}
 	let humberResults = await getData('humberRunner');
-	console.log('humberRunner', humberResults);
+	if (humberResults !== null) {
+		dataStore.humberRunner.competitors = humberResults;
+	}
 };
 export const storeData = async (key, value) => {
 	try {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
+	Alert,
 	Button,
 	FlatList,
 	SafeAreaView,
@@ -24,6 +25,7 @@ export default function AddCompetitorScreen({ navigation }) {
 	useEffect(() => {
 		setData(dataStore[dataStore.startType].competitors);
 	});
+
 	const AddName = () => {
 		if (text !== '' && number !== null) {
 			let index = dataStore[dataStore.startType].competitors.findIndex(
@@ -60,8 +62,29 @@ export default function AddCompetitorScreen({ navigation }) {
 		setData(dataStore[dataStore.startType].competitors);
 		setRefresh(refresh => !refresh);
 	};
+
+	const showAlert = number => {
+		Alert.alert('Save Result?', `Remove number: ${number}`, [
+			{ text: 'Cancel', style: 'cancel', onPress: () => {} },
+			{
+				text: `Remove`,
+				style: 'destructive',
+				onPress: () => removeNumber(number),
+			},
+		]);
+	};
+	const removeNumber = number => {
+		let index = dataStore[dataStore.startType].competitors.findIndex(
+			comp => comp.number === number
+		);
+		dataStore[dataStore.startType].competitors.splice(index, 1);
+		setRefresh(refresh => !refresh);
+		console.log('remove', number);
+	};
 	const renderItem = ({ item }) => (
-		<TouchableOpacity onPress={() => toggleRacing(item.number)}>
+		<TouchableOpacity
+			onPress={() => toggleRacing(item.number)}
+			onLongPress={() => showAlert(item.number)}>
 			<Text style={[styles.competitor, item.racing ? styles.racing : '']}>
 				{item.number}: {item.name}
 			</Text>
