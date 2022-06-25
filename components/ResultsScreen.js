@@ -96,7 +96,7 @@ export default function ResultsScreen({ navigation }) {
 		let newDate = date[0].split('-').join('');
 		saveFile(newDate, csvHeader);
 		let saveData = {
-			data: newDate,
+			date: newDate,
 			type: dataStore.startType,
 			results: dataStore.results,
 		};
