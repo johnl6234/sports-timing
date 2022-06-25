@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { convertMsToTime } from '../utils';
+import { StatusBar } from 'expo-status-bar';
 
 const DetailsScreen = ({ navigation, route }) => {
 	const [laps, setLaps] = useState([]);
@@ -24,6 +25,7 @@ const DetailsScreen = ({ navigation, route }) => {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<StatusBar style="light" />
 			<View>
 				<Text style={styles.name}>{details.name}</Text>
 				{laps}

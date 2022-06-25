@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import {
 	Button,
 	FlatList,
 	SafeAreaView,
 	StyleSheet,
+	Switch,
 	Text,
 	TextInput,
+	TouchableOpacity,
 	View,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -16,6 +19,24 @@ export default function SetUpRace({ navigation }) {
 	const [text, onChangeText] = useState('');
 	const [type, setType] = useState(null);
 	const [events, setEvents] = useState([]);
+	const [startType, setStartType] = useState(dataStore.startType);
+
+	const toggleStartType = startType => {
+		setStartType(startType);
+		if (startType === 'humberRunner') {
+			setEvents([
+				{ name: 'Run 1', type: 'running' },
+				{ name: 'Bike', type: 'bicycle' },
+				{ name: 'Run 2', type: 'running' },
+			]);
+		} else if (startType === 'cliffPratt') {
+			setEvents([
+				{ name: 'Run 1', type: 'running' },
+				{ name: 'Bike', type: 'bicycle' },
+			]);
+		}
+		dataStore.startType = startType;
+	};
 
 	const AddEvent = () => {
 		let newEvents = events;
@@ -36,6 +57,9 @@ export default function SetUpRace({ navigation }) {
 			type: 'stop',
 		});
 		dataStore.events = newEvents;
+		dataStore[dataStore.startType].competitors.sort(
+			(a, b) => a.number - b.number
+		);
 		navigation.navigate('addCompetitor');
 	};
 	const renderItem = ({ item }) => (
@@ -46,6 +70,27 @@ export default function SetUpRace({ navigation }) {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<StatusBar style="light" />
+			<View style={styles.row}>
+				<TouchableOpacity
+					style={
+						startType === 'cliffPratt'
+							? styles.active
+							: styles.button
+					}
+					onPress={() => toggleStartType('cliffPratt')}>
+					<Text style={styles.text}>Cliff Pratt</Text>
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={
+						startType === 'humberRunner'
+							? styles.active
+							: styles.button
+					}
+					onPress={() => toggleStartType('humberRunner')}>
+					<Text style={styles.text}>humber Runner</Text>
+				</TouchableOpacity>
+			</View>
 			<Text style={styles.text}>Event name</Text>
 			<TextInput
 				style={styles.input}
@@ -81,6 +126,7 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	input: {
+		fontSize: 17,
 		height: 40,
 		margin: 12,
 		borderWidth: 1,
@@ -91,6 +137,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: 'white',
+		fontSize: 20,
 	},
 	event: {
 		height: 40,
@@ -99,5 +146,24 @@ const styles = StyleSheet.create({
 		color: 'white',
 		borderRadius: 10,
 		backgroundColor: 'green',
+	},
+	row: {
+		flexDirection: 'row',
+		// justifyContent: 'flex-start',
+		alignItems: 'center',
+	},
+	active: {
+		padding: 10,
+		borderRadius: 10,
+		marginHorizontal: 10,
+		marginBottom: 10,
+		backgroundColor: 'green',
+	},
+	button: {
+		padding: 10,
+		borderRadius: 10,
+		marginHorizontal: 10,
+		marginBottom: 10,
+		backgroundColor: 'rgba(255,0,0,0.3)',
 	},
 });
