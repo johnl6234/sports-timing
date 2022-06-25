@@ -12,10 +12,12 @@ const DetailsScreen = ({ navigation, route }) => {
 
 			for (const [_key, _value] of Object.entries(details.results)) {
 				newLaps.push(
-					<Text style={styles.name} key={_key}>
-						{_key}:{' '}
-						{!isNaN(_value) ? convertMsToTime(_value) : 'DNF'}
-					</Text>
+					<View styles={styles.lap} key={_key}>
+						<Text style={styles.text}>
+							{_key}:{' '}
+							{!isNaN(_value) ? convertMsToTime(_value) : 'DNF'}
+						</Text>
+					</View>
 				);
 			}
 			setLaps(newLaps);
@@ -26,8 +28,10 @@ const DetailsScreen = ({ navigation, route }) => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar style="light" />
-			<View>
-				<Text style={styles.name}>{details.name}</Text>
+			<View style={styles.details}>
+				<View style={styles.nameView}>
+					<Text style={styles.text}>{details.name}</Text>
+				</View>
 				{laps}
 			</View>
 		</SafeAreaView>
@@ -37,23 +41,25 @@ const DetailsScreen = ({ navigation, route }) => {
 export default DetailsScreen;
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#000',
+		backgroundColor: '#0A043C',
 		flex: 1,
 		padding: 20,
 	},
-	item: {
-		backgroundColor: '#3068c9',
-		padding: 20,
-		marginVertical: 8,
-		marginHorizontal: 16,
-		display: 'flex',
-		flexDirection: 'row',
+	nameView: {
+		marginBottom: 10,
 	},
-	name: { color: 'white' },
-	time: { color: 'white' },
-	number: {
-		color: 'white',
+	text: {
+		color: '#BBBBBB',
+		fontSize: 20,
+	},
+	details: {
+		backgroundColor: '#03506F',
+		borderRadius: 15,
+
+		padding: 20,
+	},
+	lap: {
 		padding: 5,
-		marginRight: 10,
+		marginBottom: 15,
 	},
 });

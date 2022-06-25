@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import {
+	Alert,
 	SafeAreaView,
 	ScrollView,
 	StyleSheet,
@@ -12,7 +13,6 @@ import {
 import dataStore from '../Data';
 import CompetitorButton from './CompetitorButton';
 import { calculateTimes } from '../utils';
-import { storeDataWithKey } from '../localStorage';
 
 export default function CliffPrattScreen({ navigation }) {
 	const [buttons, setButtons] = useState([]);
@@ -20,6 +20,41 @@ export default function CliffPrattScreen({ navigation }) {
 	const [showStart, setShowStart] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [startGroup, setStartGroup] = useState([]);
+
+	useEffect(
+		() =>
+			navigation.addListener('beforeRemove', e => {
+				// Prevent default behavior of leaving the screen
+				e.preventDefault();
+				// Prompt the user before leaving the screen
+				Alert.alert(
+					'Discard',
+					'Going back will reset all competitors',
+					[
+						{
+							text: "Don't leave",
+							style: 'cancel',
+							onPress: () => {},
+						},
+						{
+							text: 'Continue',
+							style: 'destructive',
+
+							onPress: () => resetAndGoBack(e.data.action),
+						},
+					]
+				);
+			}),
+		[navigation]
+	);
+
+	const resetAndGoBack = e => {
+		dataStore[dataStore.startType].competitors.forEach(
+			comp => (comp.racing = false)
+		);
+		dataStore.competitors = [];
+		navigation.dispatch(e);
+	};
 
 	if (!showStart && groupButtons && groupButtons.length < 1) {
 		dataStore.cliffPratt.competitors.forEach(competitor => {
@@ -79,12 +114,6 @@ export default function CliffPrattScreen({ navigation }) {
 			}
 		}
 		dataStore.results.push(...DNFArray);
-		// create object to save
-		let results = {
-			date: Date.now().toLocaleString(),
-			results: dataStore.results,
-		};
-		storeDataWithKey('results', results);
 		navigation.navigate('results');
 	};
 
@@ -142,7 +171,7 @@ export default function CliffPrattScreen({ navigation }) {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#000',
+		backgroundColor: '#0A043C',
 		flex: 1,
 		padding: 20,
 	},
@@ -160,7 +189,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		borderRadius: 10,
 		margin: 10,
-		backgroundColor: '#eee',
+		backgroundColor: '#BBBBBB',
 	},
 	text: {
 		color: '#000',
@@ -185,7 +214,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		fontWeight: 'bold',
 		fontSize: 30,
-		color: 'white',
+		color: '#FFE3D8',
 	},
 	selected: {
 		backgroundColor: 'green',

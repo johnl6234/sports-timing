@@ -5,7 +5,6 @@ import {
 	FlatList,
 	SafeAreaView,
 	StyleSheet,
-	Switch,
 	Text,
 	TextInput,
 	TouchableOpacity,
@@ -14,6 +13,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 
 import dataStore from '../Data';
+import CustomButton from './CustomButton';
 
 export default function SetUpRace({ navigation }) {
 	const [text, onChangeText] = useState('');
@@ -97,7 +97,7 @@ export default function SetUpRace({ navigation }) {
 				onChangeText={onChangeText}
 				value={text}
 				placeholder="event"
-				placeholderTextColor={'white'}
+				placeholderTextColor={'#BBBBBB'}
 			/>
 			<Text style={styles.text}>Event type</Text>
 			<Picker
@@ -108,20 +108,34 @@ export default function SetUpRace({ navigation }) {
 				<Picker.Item label="Cycle" value="bicycle" />
 				<Picker.Item label="Run" value="running" />
 			</Picker>
-			<Button onPress={AddEvent} title="Add Event" />
+			<View style={styles.buttonContainer}>
+				<CustomButton
+					title="Add Event"
+					onPress={AddEvent}
+					style={styles.finishButton}
+					textStyle={styles.buttonText}
+				/>
+			</View>
 			<FlatList
 				data={events}
 				renderItem={renderItem}
 				keyExtractor={item => item.name}
 			/>
-			<Button title="finish" onPress={onFinish} />
+			<View style={styles.buttonContainer}>
+				<CustomButton
+					title="FINISH"
+					onPress={onFinish}
+					style={styles.finishButton}
+					textStyle={styles.buttonText}
+				/>
+			</View>
 		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#000',
+		backgroundColor: '#0A043C',
 		flex: 1,
 		padding: 20,
 	},
@@ -131,25 +145,24 @@ const styles = StyleSheet.create({
 		margin: 12,
 		borderWidth: 1,
 		padding: 10,
-		color: 'white',
-		borderColor: 'white',
+		color: '#BBBBBB',
+		borderColor: '#BBBBBB',
 		borderRadius: 10,
 	},
 	text: {
-		color: 'white',
+		color: '#BBBBBB',
 		fontSize: 20,
 	},
 	event: {
 		height: 40,
 		margin: 12,
 		padding: 10,
-		color: 'white',
+		color: '#BBBBBB',
 		borderRadius: 10,
 		backgroundColor: 'green',
 	},
 	row: {
 		flexDirection: 'row',
-		// justifyContent: 'flex-start',
 		alignItems: 'center',
 	},
 	active: {
@@ -165,5 +178,18 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10,
 		marginBottom: 10,
 		backgroundColor: 'rgba(255,0,0,0.3)',
+	},
+	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+	},
+	finishButton: {
+		backgroundColor: '#18978F',
+		paddingHorizontal: 30,
+		paddingVertical: 15,
+		borderRadius: 20,
+	},
+	buttonText: {
+		color: 'white',
 	},
 });

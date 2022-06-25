@@ -31,3 +31,18 @@ export const getData = async key => {
 		// error reading value
 	}
 };
+
+export const addToResults = async data => {
+	try {
+		let resultsArray = await getData('results');
+		if (resultsArray != null) {
+			resultsArray.push(data);
+		} else {
+			resultsArray = [data];
+		}
+		await storeData('results', resultsArray);
+		return true;
+	} catch (e) {
+		return e;
+	}
+};

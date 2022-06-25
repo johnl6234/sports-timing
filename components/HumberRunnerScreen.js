@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import {
+	Alert,
 	SafeAreaView,
 	ScrollView,
 	StyleSheet,
@@ -18,6 +19,40 @@ export default function HumberRunnerScreen({ navigation }) {
 	const [showStart, setShowStart] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
 
+	useEffect(
+		() =>
+			navigation.addListener('beforeRemove', e => {
+				// Prevent default behavior of leaving the screen
+				e.preventDefault();
+				// Prompt the user before leaving the screen
+				Alert.alert(
+					'Discard',
+					'Going back will reset all competitors',
+					[
+						{
+							text: "Don't leave",
+							style: 'cancel',
+							onPress: () => {},
+						},
+						{
+							text: 'Continue',
+							style: 'destructive',
+
+							onPress: () => resetAndGoBack(e.data.action),
+						},
+					]
+				);
+			}),
+		[navigation]
+	);
+
+	const resetAndGoBack = e => {
+		dataStore[dataStore.startType].competitors.forEach(
+			comp => (comp.racing = false)
+		);
+		dataStore.competitors = [];
+		navigation.dispatch(e);
+	};
 	if (!showStart && buttons && buttons.length < 1) {
 		dataStore.competitors.forEach(competitor => {
 			buttons.push(
@@ -82,7 +117,7 @@ export default function HumberRunnerScreen({ navigation }) {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#000',
+		backgroundColor: '#0A043C',
 		flex: 1,
 		padding: 20,
 	},
@@ -112,6 +147,6 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		fontWeight: 'bold',
 		fontSize: 30,
-		color: 'white',
+		color: '#FFE3D8',
 	},
 });

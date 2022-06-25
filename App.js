@@ -17,7 +17,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 function RaceStack() {
 	return (
-		<Tab.Navigator>
+		<Tab.Navigator barStyle={{ backgroundColor: '#03506F' }}>
 			<Tab.Screen
 				name="race"
 				component={RaceScreen}
@@ -48,10 +48,11 @@ function App() {
 		<NavigationContainer>
 			<Stack.Navigator
 				screenOptions={{
-					headerStyle: { backgroundColor: '#201F3E' },
+					headerStyle: { backgroundColor: '#03506F' },
 					headerTitleStyle: {
-						color: 'white',
+						color: '#FFE3D8',
 					},
+					headerBackVisible: false,
 				}}>
 				<Stack.Screen name="setUpRace" component={SetUpRaceScreen} />
 				<Stack.Screen

@@ -11,7 +11,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-
+import CustomButton from './CustomButton';
 import dataStore from '../Data';
 import { storeData } from '../localStorage';
 export default function AddCompetitorScreen({ navigation }) {
@@ -25,6 +25,14 @@ export default function AddCompetitorScreen({ navigation }) {
 	useEffect(() => {
 		setData(dataStore[dataStore.startType].competitors);
 	});
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			setRefresh(refresh => !refresh);
+		});
+
+		return unsubscribe;
+	}, [navigation]);
 
 	const AddName = () => {
 		if (text !== '' && number !== null) {
@@ -109,24 +117,35 @@ export default function AddCompetitorScreen({ navigation }) {
 				placeholderTextColor={'#aaa'}
 				keyboardType="numeric"
 			/>
-			<Button onPress={AddName} title="AddName" />
+			<View style={styles.buttonContainer}>
+				<CustomButton
+					title="Add Name"
+					onPress={AddName}
+					style={styles.finishButton}
+					textStyle={styles.buttonText}
+				/>
+			</View>
 			<FlatList
 				data={data}
 				renderItem={renderItem}
 				keyExtractor={item => item.number}
 				extraData={refresh}
 			/>
-			<Button
-				title="finish"
-				onPress={() => navigation.navigate('raceStack')}
-			/>
+			<View style={styles.buttonContainer}>
+				<CustomButton
+					title="finish"
+					onPress={() => navigation.navigate('raceStack')}
+					style={styles.finishButton}
+					textStyle={styles.buttonText}
+				/>
+			</View>
 		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#000',
+		backgroundColor: '#0A043C',
 		flex: 1,
 		padding: 20,
 	},
@@ -135,15 +154,15 @@ const styles = StyleSheet.create({
 		margin: 12,
 		borderWidth: 1,
 		padding: 10,
-		color: 'white',
-		borderColor: 'white',
+		color: '#BBBBBB',
+		borderColor: '#BBBBBB',
 		borderRadius: 10,
 	},
 	competitor: {
 		height: 40,
 		margin: 12,
 		padding: 10,
-		color: 'white',
+		color: '#FFE3D8',
 		borderRadius: 10,
 		backgroundColor: 'red',
 	},
@@ -152,5 +171,19 @@ const styles = StyleSheet.create({
 	},
 	message: {
 		color: 'red',
+	},
+	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginHorizontal: 5,
+	},
+	finishButton: {
+		backgroundColor: '#18978F',
+		paddingHorizontal: 30,
+		paddingVertical: 15,
+		borderRadius: 20,
+	},
+	buttonText: {
+		color: 'white',
 	},
 });
