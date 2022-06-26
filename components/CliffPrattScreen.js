@@ -12,6 +12,7 @@ import {
 
 import dataStore from '../Data';
 import CompetitorButton from './CompetitorButton';
+import CustomButton from './CustomButton';
 import { calculateTimes } from '../utils';
 
 export default function CliffPrattScreen({ navigation }) {
@@ -20,6 +21,7 @@ export default function CliffPrattScreen({ navigation }) {
 	const [showStart, setShowStart] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [startGroup, setStartGroup] = useState([]);
+	const [nonRacers, setNonRacers] = useState([]);
 
 	useEffect(
 		() =>
@@ -117,11 +119,26 @@ export default function CliffPrattScreen({ navigation }) {
 		navigation.navigate('results');
 	};
 
+	const addLateCompetitor = () => {
+		let list = dataStore[dataStore.startType].competitors.filter(
+			comp => comp.racing === false
+		);
+		setNonRacers(list);
+	};
+
+	const addGroupButton = competitor => {
+		competitor.racing = true;
+		let list = groupButtons.map(x => x);
+		list.push(competitor);
+		list.sort((a, b) => a.number - b.number);
+		setGroupButtons(list);
+		setNonRacers([]);
+	};
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
 				<StatusBar style="light" />
-				<View style={styles.buttonContainer}>
+				<View style={styles.groupButtonContainer}>
 					{buttons.map(competitor => {
 						return (
 							<CompetitorButton
@@ -142,7 +159,7 @@ export default function CliffPrattScreen({ navigation }) {
 					</Text>
 				</TouchableOpacity>
 
-				<View style={styles.buttonContainer}>
+				<View style={styles.groupButtonContainer}>
 					{groupButtons.map(competitor => {
 						return (
 							<TouchableOpacity
@@ -164,6 +181,30 @@ export default function CliffPrattScreen({ navigation }) {
 						);
 					})}
 				</View>
+				<View style={styles.buttonContainer}>
+					<CustomButton
+						title="add competitor"
+						onPress={addLateCompetitor}
+						style={styles.finishButton}
+						textStyle={styles.buttonText}
+					/>
+				</View>
+				<View>
+					<View style={styles.groupButtonContainer}>
+						{nonRacers.map(competitor => {
+							return (
+								<TouchableOpacity
+									key={competitor.number}
+									style={styles.button}
+									onPress={() => addGroupButton(competitor)}>
+									<Text style={styles.text}>
+										{competitor.number}
+									</Text>
+								</TouchableOpacity>
+							);
+						})}
+					</View>
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -175,7 +216,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 20,
 	},
-	buttonContainer: {
+	groupButtonContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		paddingBottom: 40,
@@ -218,5 +259,19 @@ const styles = StyleSheet.create({
 	},
 	selected: {
 		backgroundColor: 'green',
+	},
+	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginHorizontal: 5,
+	},
+	finishButton: {
+		backgroundColor: '#18978F',
+		paddingHorizontal: 30,
+		paddingVertical: 15,
+		borderRadius: 20,
+	},
+	buttonText: {
+		color: 'white',
 	},
 });
