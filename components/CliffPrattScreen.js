@@ -14,6 +14,7 @@ import dataStore from '../Data';
 import CompetitorButton from './CompetitorButton';
 import CustomButton from './CustomButton';
 import { calculateTimes } from '../utils';
+import StopWatch from './StopWatch';
 
 export default function CliffPrattScreen({ navigation }) {
 	const [buttons, setButtons] = useState([]);
@@ -22,6 +23,7 @@ export default function CliffPrattScreen({ navigation }) {
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [startGroup, setStartGroup] = useState([]);
 	const [nonRacers, setNonRacers] = useState([]);
+	const [startClock, setStartClock] = useState(false);
 
 	useEffect(
 		() =>
@@ -39,7 +41,7 @@ export default function CliffPrattScreen({ navigation }) {
 							onPress: () => {},
 						},
 						{
-							text: 'Continue',
+							text: 'Leave',
 							style: 'destructive',
 
 							onPress: () => resetAndGoBack(e.data.action),
@@ -74,7 +76,7 @@ export default function CliffPrattScreen({ navigation }) {
 	const StartTimer = () => {
 		let list = startGroup.map(comp => comp); // list of runners to set off
 		let buttonList = groupButtons.map(butt => butt); // buttons of runners
-
+		setStartClock(true);
 		// create competitor buttons
 		list.forEach(competitor => {
 			competitor.times = { startTime: Date.now() };
@@ -102,6 +104,7 @@ export default function CliffPrattScreen({ navigation }) {
 	const StopTimer = async () => {
 		setButtons([]);
 		setIsDisabled(true);
+		setStartClock(false);
 		// Add unfinished competitors to results array as DNF
 		let DNFArray = [];
 		for (let index in dataStore.competitors) {
@@ -138,6 +141,7 @@ export default function CliffPrattScreen({ navigation }) {
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
 				<StatusBar style="light" />
+				<StopWatch startClock={startClock} />
 				<View style={styles.groupButtonContainer}>
 					{buttons.map(competitor => {
 						return (

@@ -13,11 +13,13 @@ import {
 import dataStore from '../Data';
 import CompetitorButton from './CompetitorButton';
 import { calculateTimes } from '../utils';
+import StopWatch from './StopWatch';
 
 export default function HumberRunnerScreen({ navigation }) {
 	const [buttons, setButtons] = useState([]);
 	const [showStart, setShowStart] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
+	const [startTimer, setStartTimer] = userSTate(false);
 
 	useEffect(
 		() =>
@@ -100,6 +102,7 @@ export default function HumberRunnerScreen({ navigation }) {
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
 				<StatusBar style="light" />
+
 				<View style={styles.buttonContainer}>{buttons}</View>
 
 				<TouchableOpacity
