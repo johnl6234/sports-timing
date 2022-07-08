@@ -6,8 +6,6 @@ import {
 	FlatList,
 	SafeAreaView,
 	StyleSheet,
-	Text,
-	TouchableOpacity,
 	View,
 } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
@@ -17,6 +15,7 @@ import { convertMsToTime } from '../utils';
 import dataStore from '../Data';
 import ResultItem from '../components/ResultItem';
 import { addToResults } from '../localStorage';
+import CustomButton from '../components/CustomButton';
 
 export default function ResultsScreen({ navigation }) {
 	const [results, setResults] = useState(dataStore.results);
@@ -119,7 +118,12 @@ export default function ResultsScreen({ navigation }) {
 				keyExtractor={item => item.number}
 			/>
 			<View style={styles.buttonContainer}>
-				<Button color="red" title="Export results" onPress={checkEnd} />
+				<CustomButton
+					style={styles.endButton}
+					textStyle={styles.buttonText}
+					onPress={checkEnd}
+					title={'Save Results'}
+				/>
 			</View>
 		</SafeAreaView>
 	);
@@ -128,31 +132,12 @@ export default function ResultsScreen({ navigation }) {
 const saveFile = async (filename, file) => {
 	const { status } = await MediaLibrary.getPermissionsAsync();
 	if (status === 'granted') {
-		let fileUri = FileSystem.documentDirectory + '/' + filename + '.csv';
+		let fileUri = FileSystem.documentDirectory + filename + '.csv';
+		console.log('fileUri', fileUri);
 		await FileSystem.writeAsStringAsync(fileUri, file, {
 			encoding: FileSystem.EncodingType.UTF8,
 		});
-		const asset = await MediaLibrary.createAssetAsync(fileUri);
-
-		const album = await MediaLibrary.getAlbumAsync('Results');
-		console.log('album', album);
-
-		RNFetchBlob.fs.mv;
-
-		if (album === null) {
-			await MediaLibrary.createAlbumAsync('Results', asset).then(res =>
-				console.log('media', res)
-			);
-		} else {
-			let assetAdded = await MediaLibrary.addAssetsToAlbumAsync(
-				[asset],
-				album,
-				false
-			);
-			if (assetAdded === false) {
-				console.log('ASSET ADD ERROR');
-			}
-		}
+		await MediaLibrary.createAssetAsync(fileUri);
 	}
 };
 
@@ -162,13 +147,19 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 20,
 	},
-	endButton: {
+	buttonContainer: {
+		flexDirection: 'row',
 		justifyContent: 'center',
+	},
+	endButton: {
 		backgroundColor: 'red',
 		borderRadius: 10,
-		marginHorizontal: 20,
+		width: 150,
 		padding: 10,
-		paddingHorizontal: 50,
+	},
+	buttonText: {
+		color: 'white',
+		textAlign: 'center',
 	},
 	end: {
 		border: 1,
