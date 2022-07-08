@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { convertMsToTime } from '../utils';
+import { convertMsToTime, moderateScale } from '../utils';
 import { StatusBar } from 'expo-status-bar';
 
 const DetailsScreen = ({ navigation, route }) => {
@@ -43,23 +43,22 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: '#0A043C',
 		flex: 1,
-		padding: 20,
+		padding: moderateScale(20),
 	},
 	nameView: {
 		marginBottom: 10,
 	},
 	text: {
 		color: '#BBBBBB',
-		fontSize: 20,
+		fontSize: moderateScale(18),
 	},
 	details: {
 		backgroundColor: '#03506F',
 		borderRadius: 15,
-
-		padding: 20,
+		padding: moderateScale(20),
 	},
 	lap: {
-		padding: 5,
+		padding: moderateScale(5),
 		marginBottom: 15,
 	},
 });

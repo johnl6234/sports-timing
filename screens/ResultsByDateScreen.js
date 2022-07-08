@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { convertDate, convertMsToTime } from '../utils';
+import { convertDate, convertMsToTime, moderateScale } from '../utils';
 
 export default function ResultsByDateScreen({ navigation, route }) {
 	const [results, setResults] = useState(route.params.results);
@@ -53,24 +53,24 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		color: '#BBBBBB',
-		fontSize: 18,
+		fontSize: moderateScale(18),
 		fontWeight: 'bold',
 		marginBottom: 5,
 	},
 	text: {
 		color: '#BBBBBB',
-		fontSize: 18,
+		fontSize: moderateScale(18),
 	},
 	keyText: {
 		color: '#BBBBBB',
-		fontSize: 18,
-		width: 100,
+		fontSize: moderateScale(18),
+		width: moderateScale(100),
 	},
 	details: {
 		backgroundColor: '#03506F',
-		marginBottom: 10,
-		borderRadius: 10,
-		padding: 10,
+		marginBottom: moderateScale(10),
+		borderRadius: moderateScale(10),
+		padding: moderateScale(10),
 	},
 	nameView: {
 		marginBottom: 5,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		backgroundColor: '#0A043C',
-		padding: 10,
+		padding: moderateScale(8),
 		marginBottom: 5,
 		borderRadius: 10,
 	},

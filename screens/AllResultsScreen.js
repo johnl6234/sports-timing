@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { getData, storeData } from '../localStorage';
-import { convertDate } from '../utils';
+import { convertDate, moderateScale } from '../utils';
 
 export default function AllResultsScreen({ navigation }) {
 	const [allResults, setAllResults] = useState();
@@ -20,10 +20,6 @@ export default function AllResultsScreen({ navigation }) {
 	}, [navigation]);
 	const loadResults = async () => {
 		let results = await getData('results');
-		// results.forEach(res => {
-		// 	res.date = res.data;
-		// });
-		// await storeData('results', results);
 		results.sort((a, b) => a.date - b.date);
 		setAllResults(results);
 	};
@@ -62,6 +58,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: '#BBBBBB',
-		fontSize: 18,
+		fontSize: moderateScale(20),
 	},
 });

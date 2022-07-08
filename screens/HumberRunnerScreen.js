@@ -12,13 +12,14 @@ import {
 
 import dataStore from '../Data';
 import CompetitorButton from '../components/CompetitorButton';
-import { calculateTimes } from '../utils';
+import { calculateTimes, moderateScale } from '../utils';
 import StopWatch from '../components/StopWatch';
 
 export default function HumberRunnerScreen({ navigation }) {
 	const [buttons, setButtons] = useState([]);
 	const [showStart, setShowStart] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
+	const [competitors, setCompetitors] = useState(dataStore.competitors);
 	const [startClock, setStartClock] = useState(false);
 
 	useEffect(
@@ -105,7 +106,16 @@ export default function HumberRunnerScreen({ navigation }) {
 			<ScrollView>
 				<StatusBar style="light" />
 				<StopWatch startClock={startClock} />
-				<View style={styles.buttonContainer}>{buttons}</View>
+				<View style={styles.buttonContainer}>
+					{competitors.map(competitor => (
+						<CompetitorButton
+							styles={!showStart ? styles.disabled : ''}
+							isDisabled={!showStart}
+							key={competitor.number}
+							number={competitor.number}
+						/>
+					))}
+				</View>
 
 				<TouchableOpacity
 					disabled={isDisabled}
@@ -131,8 +141,30 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap',
 		paddingBottom: 40,
 	},
+	disabled: {
+		opacity: 0.5,
+		backgroundColor: 'grey',
+	},
+	groupButtonContainer: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		paddingBottom: 40,
+	},
 	buttonStart: {
 		backgroundColor: 'green',
+	},
+	button: {
+		minWidth: moderateScale(45),
+		paddingVertical: 10,
+		justifyContent: 'center',
+		borderRadius: 10,
+		margin: 10,
+		backgroundColor: '#BBBBBB',
+	},
+	text: {
+		color: '#000',
+		fontSize: moderateScale(18),
+		alignSelf: 'center',
 	},
 	start: {
 		backgroundColor: 'green',
@@ -140,6 +172,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 30,
 		borderRadius: 15,
 		justifyContent: 'center',
+		marginBottom: moderateScale(20),
 	},
 	stop: {
 		backgroundColor: 'red',
@@ -147,11 +180,22 @@ const styles = StyleSheet.create({
 		marginHorizontal: 30,
 		borderRadius: 15,
 		justifyContent: 'center',
+		marginBottom: moderateScale(20),
 	},
 	startText: {
 		alignSelf: 'center',
 		fontWeight: 'bold',
-		fontSize: 30,
+		fontSize: moderateScale(30),
 		color: '#FFE3D8',
+	},
+	finishButton: {
+		backgroundColor: '#18978F',
+		paddingHorizontal: 30,
+		paddingVertical: 15,
+		borderRadius: 20,
+	},
+	buttonText: {
+		fontSize: moderateScale(15),
+		color: 'white',
 	},
 });

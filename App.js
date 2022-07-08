@@ -5,6 +5,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -13,26 +14,47 @@ import RaceScreen from './screens/RaceScreen';
 import ResultsScreen from './screens/ResultsScreen';
 import DetailsScreen from './screens/DetailsScreen';
 import AddCompetitorScreen from './screens/AddCompetitorScreen';
-import SetUpRaceScreen from './components/SetUpRace';
+import SetUpRaceScreen from './screens/SetUpRace';
 import AllResultsScreen from './screens/AllResultsScreen';
 import ResultsByDateScreen from './screens/ResultsByDateScreen';
 
 import { getCompetitorData } from './localStorage';
+import { moderateScale } from './utils';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 function RaceStack() {
 	return (
-		<Tab.Navigator barStyle={{ backgroundColor: '#03506F' }}>
+		<Tab.Navigator
+			screenOptions={{
+				headerShown: false,
+				headerBackVisible: false,
+				tabBarActiveTintColor: 'white',
+				tabBarInactiveTintColor: 'grey',
+				tabBarActiveBackgroundColor: '#046991',
+				tabBarLabelStyle: {
+					textAlign: 'center',
+					fontSize: moderateScale(18),
+				},
+				tabBarStyle: {
+					backgroundColor: '#03506F',
+					height: moderateScale(60),
+					padding: 0,
+				},
+			}}>
 			<Tab.Screen
 				name="race"
 				component={RaceScreen}
 				options={{
 					tabBarLabel: 'Race',
 					tabBarIcon: ({ color }) => (
-						<Icon name="flag-checkered" color={color} size={26} />
+						<Icon
+							name="flag-checkered"
+							color={color}
+							size={moderateScale(20)}
+						/>
 					),
 				}}
 			/>
@@ -42,7 +64,11 @@ function RaceStack() {
 				options={{
 					tabBarLabel: 'Results',
 					tabBarIcon: ({ color }) => (
-						<Icon name="list" color={color} size={26} />
+						<Icon
+							name="list"
+							color={color}
+							size={moderateScale(20)}
+						/>
 					),
 				}}
 			/>
@@ -94,18 +120,26 @@ function App() {
 					headerStyle: { backgroundColor: '#03506F' },
 					headerTitleStyle: {
 						color: '#FFE3D8',
+						fontSize: moderateScale(18),
 					},
 					headerTintColor: 'white',
 					drawerStyle: {
 						backgroundColor: '#03506F',
-						width: 240,
+						width: moderateScale(240),
 					},
 					drawerActiveTintColor: 'white',
 					drawerInactiveTintColor: '#bbbbbb',
+					drawerLabelStyle: {
+						fontSize: moderateScale(20),
+						paddingLeft: moderateScale(10),
+					},
+					drawerActiveBackgroundColor: '#046991',
 				}}>
 				<Drawer.Screen name="Race Set Up" component={MainStack} />
 				<Drawer.Screen
-					options={{ title: 'All Results' }}
+					options={{
+						title: 'All Results',
+					}}
 					name="ResultsStack"
 					component={ResultsStack}
 				/>

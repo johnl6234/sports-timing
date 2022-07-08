@@ -9,7 +9,7 @@ import {
 	View,
 } from 'react-native';
 
-import { convertMsToTime } from '../utils';
+import { convertMsToTime, moderateScale } from '../utils';
 
 const ResultItem = ({ result, onPress, index }) => (
 	<TouchableOpacity style={styles.item} onPress={onPress}>
@@ -24,7 +24,7 @@ const ResultItem = ({ result, onPress, index }) => (
 					: convertMsToTime(result.results.overall)}
 			</Text>
 		</View>
-		<View>
+		<View style={styles.numberView}>
 			<Text style={styles.number}>No:</Text>
 			<Text style={styles.number}>{result.number}</Text>
 		</View>
@@ -35,7 +35,7 @@ export default ResultItem;
 const styles = StyleSheet.create({
 	item: {
 		backgroundColor: '#03506F',
-		padding: 20,
+		padding: moderateScale(20),
 		paddingVertical: 10,
 		marginVertical: 8,
 		marginHorizontal: 16,
@@ -44,29 +44,33 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 	},
 	nameView: {
-		width: 175,
+		flex: 3,
 	},
 	title: {
 		color: '#BBBBBB',
-		fontSize: 18,
+		fontSize: moderateScale(16),
 	},
 	time: {
 		color: '#BBBBBB',
-		fontSize: 18,
+		fontSize: moderateScale(16),
 	},
 	number: {
 		color: '#BBBBBB',
 		padding: 5,
 		marginRight: 10,
-		fontSize: 18,
+		fontSize: moderateScale(18),
 	},
 	positionView: {
-		width: 50,
+		width: moderateScale(50),
 	},
 	position: {
 		color: '#FFE3D8',
 		padding: 5,
 		marginRight: 10,
-		fontSize: 25,
+		fontSize: moderateScale(25),
+	},
+	numberView: {
+		flexDirection: 'row',
+		flex: 1,
 	},
 });

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import dataStore from '../Data';
-import { calculateTimes } from '../utils';
+import { calculateTimes, moderateScale } from '../utils';
 
 const CompetitorButton = props => {
 	const [isDisabled, setIsDisabled] = useState();
@@ -61,7 +61,7 @@ const CompetitorButton = props => {
 		<TouchableOpacity
 			key={props.isDisabled}
 			disabled={isDisabled}
-			style={[styles.button, styles[event.type]]}
+			style={[styles.button, styles[event.type], props.styles]}
 			onPress={switchSport}
 			onLongPress={() => markDNF(props.number)}>
 			<Icon style={styles.text} name={event.type} />
@@ -73,7 +73,7 @@ const CompetitorButton = props => {
 export default CompetitorButton;
 const styles = StyleSheet.create({
 	button: {
-		width: 60,
+		width: moderateScale(60),
 		paddingVertical: 10,
 		justifyContent: 'center',
 		borderRadius: 10,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: '#fff',
-		fontSize: 20,
+		fontSize: moderateScale(20),
 		marginHorizontal: 15,
 	},
 	swimmer: { backgroundColor: 'blue' },

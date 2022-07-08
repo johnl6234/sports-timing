@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { moderateScale } from '../utils';
 import { palette } from '../utils/globalStyle';
 
 export default function StopWatch({ startClock }) {
@@ -51,16 +52,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	stopwatch: {
-		width: '60%',
-		height: 150,
+		width: moderateScale(300),
+		height: moderateScale(100),
 		backgroundColor: palette.background,
-		borderRadius: 10,
+		borderRadius: moderateScale(20),
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 5,
 	},
 	timerText: {
+		textAlignVertical: 'center',
 		color: 'white',
-		fontSize: 80,
+		fontSize: moderateScale(80),
 	},
 });

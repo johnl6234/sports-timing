@@ -13,7 +13,7 @@ import {
 import dataStore from '../Data';
 import CompetitorButton from '../components/CompetitorButton';
 import CustomButton from '../components/CustomButton';
-import { calculateTimes } from '../utils';
+import { calculateTimes, moderateScale } from '../utils';
 import StopWatch from '../components/StopWatch';
 
 export default function CliffPrattScreen({ navigation }) {
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'green',
 	},
 	button: {
-		width: 60,
+		minWidth: moderateScale(45),
 		paddingVertical: 10,
 		justifyContent: 'center',
 		borderRadius: 10,
@@ -238,8 +238,8 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: '#000',
-		fontSize: 20,
-		marginHorizontal: 15,
+		fontSize: moderateScale(18),
+		alignSelf: 'center',
 	},
 	start: {
 		backgroundColor: 'green',
@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 30,
 		borderRadius: 15,
 		justifyContent: 'center',
+		marginBottom: moderateScale(20),
 	},
 	stop: {
 		backgroundColor: 'red',
@@ -254,11 +255,12 @@ const styles = StyleSheet.create({
 		marginHorizontal: 30,
 		borderRadius: 15,
 		justifyContent: 'center',
+		marginBottom: moderateScale(20),
 	},
 	startText: {
 		alignSelf: 'center',
 		fontWeight: 'bold',
-		fontSize: 30,
+		fontSize: moderateScale(30),
 		color: '#FFE3D8',
 	},
 	selected: {
@@ -276,6 +278,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 	},
 	buttonText: {
+		fontSize: moderateScale(15),
 		color: 'white',
 	},
 });

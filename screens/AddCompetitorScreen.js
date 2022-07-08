@@ -14,6 +14,7 @@ import {
 import CustomButton from '../components/CustomButton';
 import dataStore from '../Data';
 import { storeData } from '../localStorage';
+import { moderateScale } from '../utils';
 export default function AddCompetitorScreen({ navigation }) {
 	const [text, onChangeText] = useState('');
 	const [number, onChangeNumber] = useState(null);
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	input: {
-		height: 40,
+		fontSize: moderateScale(15),
 		margin: 12,
 		borderWidth: 1,
 		padding: 10,
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 	},
 	competitor: {
-		height: 40,
+		fontSize: moderateScale(15),
 		margin: 12,
 		padding: 10,
 		color: '#FFE3D8',
@@ -184,6 +185,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 	},
 	buttonText: {
+		fontSize: moderateScale(15),
 		color: 'white',
 	},
 });

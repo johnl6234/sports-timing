@@ -11,7 +11,7 @@ import {
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
 
-import { convertMsToTime } from '../utils';
+import { convertMsToTime, moderateScale } from '../utils';
 import dataStore from '../Data';
 import ResultItem from '../components/ResultItem';
 import { addToResults } from '../localStorage';
@@ -154,10 +154,11 @@ const styles = StyleSheet.create({
 	endButton: {
 		backgroundColor: 'red',
 		borderRadius: 10,
-		width: 150,
+		width: moderateScale(150),
 		padding: 10,
 	},
 	buttonText: {
+		fontSize: moderateScale(18),
 		color: 'white',
 		textAlign: 'center',
 	},

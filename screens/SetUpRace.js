@@ -13,7 +13,8 @@ import {
 import { Picker } from '@react-native-picker/picker';
 
 import dataStore from '../Data';
-import CustomButton from './CustomButton';
+import CustomButton from '../components/CustomButton';
+import { moderateScale } from '../utils';
 
 export default function SetUpRace({ navigation }) {
 	const [text, onChangeText] = useState('');
@@ -140,8 +141,8 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	input: {
-		fontSize: 17,
-		height: 40,
+		fontSize: moderateScale(17),
+		height: moderateScale(40),
 		margin: 12,
 		borderWidth: 1,
 		padding: 10,
@@ -151,12 +152,12 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: '#BBBBBB',
-		fontSize: 20,
+		fontSize: moderateScale(18),
 	},
 	event: {
-		height: 40,
+		fontSize: moderateScale(17),
 		margin: 12,
-		padding: 10,
+		padding: moderateScale(10),
 		color: '#BBBBBB',
 		borderRadius: 10,
 		backgroundColor: 'green',
@@ -187,9 +188,10 @@ const styles = StyleSheet.create({
 		backgroundColor: '#18978F',
 		paddingHorizontal: 30,
 		paddingVertical: 15,
-		borderRadius: 20,
+		borderRadius: moderateScale(20),
 	},
 	buttonText: {
+		fontSize: moderateScale(15),
 		color: 'white',
 	},
 });
