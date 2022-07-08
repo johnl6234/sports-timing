@@ -12,11 +12,10 @@ import {
 } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
-import * as Permissions from 'expo-permissions';
 
 import { convertMsToTime } from '../utils';
 import dataStore from '../Data';
-import ResultItem from './ResultItem';
+import ResultItem from '../components/ResultItem';
 import { addToResults } from '../localStorage';
 
 export default function ResultsScreen({ navigation }) {
@@ -127,14 +126,33 @@ export default function ResultsScreen({ navigation }) {
 }
 
 const saveFile = async (filename, file) => {
-	const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+	const { status } = await MediaLibrary.getPermissionsAsync();
 	if (status === 'granted') {
 		let fileUri = FileSystem.documentDirectory + '/' + filename + '.csv';
 		await FileSystem.writeAsStringAsync(fileUri, file, {
 			encoding: FileSystem.EncodingType.UTF8,
 		});
 		const asset = await MediaLibrary.createAssetAsync(fileUri);
-		await MediaLibrary.createAlbumAsync('Download', asset, false);
+
+		const album = await MediaLibrary.getAlbumAsync('Results');
+		console.log('album', album);
+
+		RNFetchBlob.fs.mv;
+
+		if (album === null) {
+			await MediaLibrary.createAlbumAsync('Results', asset).then(res =>
+				console.log('media', res)
+			);
+		} else {
+			let assetAdded = await MediaLibrary.addAssetsToAlbumAsync(
+				[asset],
+				album,
+				false
+			);
+			if (assetAdded === false) {
+				console.log('ASSET ADD ERROR');
+			}
+		}
 	}
 };
 

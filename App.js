@@ -9,13 +9,13 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import RaceScreen from './components/RaceScreen';
-import ResultsScreen from './components/ResultsScreen';
-import DetailsScreen from './components/DetailsScreen';
-import AddCompetitorScreen from './components/AddCompetitorScreen';
+import RaceScreen from './screens/RaceScreen';
+import ResultsScreen from './screens/ResultsScreen';
+import DetailsScreen from './screens/DetailsScreen';
+import AddCompetitorScreen from './screens/AddCompetitorScreen';
 import SetUpRaceScreen from './components/SetUpRace';
-import AllResultsScreen from './components/AllResultsScreen';
-import ResultsByDateScreen from './components/ResultsByDateScreen';
+import AllResultsScreen from './screens/AllResultsScreen';
+import ResultsByDateScreen from './screens/ResultsByDateScreen';
 
 import { getCompetitorData } from './localStorage';
 

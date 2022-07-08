@@ -11,15 +11,15 @@ import {
 } from 'react-native';
 
 import dataStore from '../Data';
-import CompetitorButton from './CompetitorButton';
+import CompetitorButton from '../components/CompetitorButton';
 import { calculateTimes } from '../utils';
-import StopWatch from './StopWatch';
+import StopWatch from '../components/StopWatch';
 
 export default function HumberRunnerScreen({ navigation }) {
 	const [buttons, setButtons] = useState([]);
 	const [showStart, setShowStart] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
-	const [startTimer, setStartTimer] = userSTate(false);
+	const [startClock, setStartClock] = useState(false);
 
 	useEffect(
 		() =>
@@ -68,6 +68,7 @@ export default function HumberRunnerScreen({ navigation }) {
 	}
 
 	const StartTimer = () => {
+		setStartClock(true);
 		dataStore.startTime = Date.now();
 		// initiate times array with start time
 		dataStore.competitors.forEach(competitor => {
@@ -81,6 +82,7 @@ export default function HumberRunnerScreen({ navigation }) {
 	const StopTimer = async () => {
 		setButtons([]);
 		setIsDisabled(true);
+		setStartClock(false);
 		// Add unfinished competitors to results array as DNF
 		let DNFArray = [];
 		for (let index in dataStore.competitors) {
@@ -102,7 +104,7 @@ export default function HumberRunnerScreen({ navigation }) {
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
 				<StatusBar style="light" />
-
+				<StopWatch startClock={startClock} />
 				<View style={styles.buttonContainer}>{buttons}</View>
 
 				<TouchableOpacity

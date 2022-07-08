@@ -11,10 +11,10 @@ import {
 } from 'react-native';
 
 import dataStore from '../Data';
-import CompetitorButton from './CompetitorButton';
-import CustomButton from './CustomButton';
+import CompetitorButton from '../components/CompetitorButton';
+import CustomButton from '../components/CustomButton';
 import { calculateTimes } from '../utils';
-import StopWatch from './StopWatch';
+import StopWatch from '../components/StopWatch';
 
 export default function CliffPrattScreen({ navigation }) {
 	const [buttons, setButtons] = useState([]);

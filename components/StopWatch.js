@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { palette } from '../utils/globalStyle';
 
-export default function StopWatch(props) {
-	const [isActive, setIsActive] = useState(props.startClock);
+export default function StopWatch({ startClock }) {
+	const [isActive, setIsActive] = useState(startClock);
 	const [seconds, setSeconds] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 
@@ -14,10 +14,9 @@ export default function StopWatch(props) {
 		setIsActive(false);
 	};
 	useEffect(() => {
-		console.log('start condition', props.startClock);
-		if (props.startClock && !isActive) start();
+		if (startClock && !isActive) start();
 		else stopTimer();
-	});
+	}, [startClock]);
 	useEffect(() => {
 		let interval = null;
 		if (isActive) {
@@ -53,15 +52,15 @@ const styles = StyleSheet.create({
 	},
 	stopwatch: {
 		width: '60%',
-		height: 100,
+		height: 150,
 		backgroundColor: palette.background,
 		borderRadius: 10,
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 10,
+		padding: 5,
 	},
 	timerText: {
 		color: 'white',
-		fontSize: 30,
+		fontSize: 80,
 	},
 });

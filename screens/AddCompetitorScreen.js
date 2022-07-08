@@ -11,7 +11,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import CustomButton from './CustomButton';
+import CustomButton from '../components/CustomButton';
 import dataStore from '../Data';
 import { storeData } from '../localStorage';
 export default function AddCompetitorScreen({ navigation }) {
