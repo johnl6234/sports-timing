@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
 	Alert,
-	Button,
 	FlatList,
 	SafeAreaView,
 	StyleSheet,
