@@ -24,6 +24,7 @@ export default function ResultsByDateScreen({ navigation, route }) {
 		return (
 			<View style={styles.details}>
 				<View style={styles.nameView}>
+					<Text style={styles.text}> Bib No:{item.number}</Text>
 					<Text style={styles.text}>{item.name}</Text>
 					<Text style={[styles.text]}>Position: {item.position}</Text>
 				</View>

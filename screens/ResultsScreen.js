@@ -133,7 +133,6 @@ const saveFile = async (filename, file) => {
 	const { status } = await MediaLibrary.getPermissionsAsync();
 	if (status === 'granted') {
 		let fileUri = FileSystem.documentDirectory + filename + '.csv';
-		console.log('fileUri', fileUri);
 		await FileSystem.writeAsStringAsync(fileUri, file, {
 			encoding: FileSystem.EncodingType.UTF8,
 		});

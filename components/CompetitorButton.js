@@ -14,7 +14,6 @@ const CompetitorButton = props => {
 		let competitor = dataStore.competitors.find(
 			comp => comp.number === number
 		);
-		console.log('comp', competitor);
 		//Add event and time to data
 		if (competitor.times.startTime) {
 			competitor.times[
