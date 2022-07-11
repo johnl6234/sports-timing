@@ -45,3 +45,7 @@ export const addToResults = async data => {
 		return e;
 	}
 };
+
+export const clearResults = async () => {
+	await AsyncStorage.removeItem('results');
+};
