@@ -20,10 +20,12 @@ export default function ResultsByDateScreen({ navigation, route }) {
 				</Text>
 			</View>
 		);
+
 		return (
 			<View style={styles.details}>
 				<View style={styles.nameView}>
 					<Text style={styles.text}>{item.name}</Text>
+					<Text style={[styles.text]}>Position: {item.position}</Text>
 				</View>
 				<FlatList
 					data={newLaps}
@@ -33,6 +35,7 @@ export default function ResultsByDateScreen({ navigation, route }) {
 			</View>
 		);
 	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<Text style={styles.title}>{convertDate(results.date)}</Text>
@@ -74,6 +77,10 @@ const styles = StyleSheet.create({
 	},
 	nameView: {
 		marginBottom: 5,
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingHorizontal: 10,
 	},
 	lap: {
 		flexDirection: 'row',

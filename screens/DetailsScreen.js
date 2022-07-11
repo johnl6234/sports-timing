@@ -11,28 +11,37 @@ const DetailsScreen = ({ navigation, route }) => {
 			let newLaps = [];
 
 			for (const [_key, _value] of Object.entries(details.results)) {
-				newLaps.push(
-					<View styles={styles.lap} key={_key}>
-						<Text style={styles.text}>
-							{_key}:{' '}
-							{!isNaN(_value) ? convertMsToTime(_value) : 'DNF'}
-						</Text>
-					</View>
-				);
+				newLaps.push({ key: _key, value: _value });
 			}
 			setLaps(newLaps);
 		});
 		return unsubscribe;
 	}, [navigation]);
 
+	const lap = ({ item }) => (
+		<View style={styles.lap} key={item.key}>
+			<Text style={styles.keyText}>{item.key}:</Text>
+			<Text style={styles.text}>
+				{!isNaN(item.value) ? convertMsToTime(item.value) : 'DNF'}
+			</Text>
+		</View>
+	);
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar style="light" />
+
 			<View style={styles.details}>
 				<View style={styles.nameView}>
 					<Text style={styles.text}>{details.name}</Text>
+					<Text style={[styles.text]}>
+						Position: {details.position}
+					</Text>
 				</View>
-				{laps}
+				<FlatList
+					data={laps}
+					renderItem={lap}
+					keyExtractor={item => item.key}
+				/>
 			</View>
 		</SafeAreaView>
 	);
@@ -43,22 +52,42 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: '#0A043C',
 		flex: 1,
-		padding: moderateScale(20),
+		padding: 20,
 	},
-	nameView: {
-		marginBottom: 10,
+	title: {
+		color: '#BBBBBB',
+		fontSize: moderateScale(18),
+		fontWeight: 'bold',
+		marginBottom: 5,
 	},
 	text: {
 		color: '#BBBBBB',
 		fontSize: moderateScale(18),
 	},
+	keyText: {
+		color: '#BBBBBB',
+		fontSize: moderateScale(18),
+		width: moderateScale(100),
+	},
 	details: {
 		backgroundColor: '#03506F',
-		borderRadius: 15,
-		padding: moderateScale(20),
+		marginBottom: moderateScale(10),
+		borderRadius: moderateScale(10),
+		padding: moderateScale(10),
+	},
+	nameView: {
+		marginBottom: 5,
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingHorizontal: 10,
 	},
 	lap: {
-		padding: moderateScale(5),
-		marginBottom: 15,
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		backgroundColor: '#0A043C',
+		padding: moderateScale(8),
+		marginBottom: 5,
+		borderRadius: 10,
 	},
 });

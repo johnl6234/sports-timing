@@ -1,15 +1,7 @@
-import { useEffect, useState } from 'react';
-import {
-	Button,
-	SafeAreaView,
-	ScrollView,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import dataStore from '../Data';
+import dataStore from '../dataStore';
 import { calculateTimes, moderateScale } from '../utils';
 
 const CompetitorButton = props => {
@@ -19,36 +11,34 @@ const CompetitorButton = props => {
 	const switchSport = () => {
 		let number = props.number;
 		let events = dataStore.events;
+		let competitor = dataStore.competitors.find(
+			comp => comp.number === number
+		);
+		console.log('comp', competitor);
 		//Add event and time to data
-		if (
-			dataStore.startType === 'cliffPratt' ||
-			dataStore.startTime !== null
-		) {
-			dataStore.competitors.forEach(competitor => {
-				if (competitor.number === number) {
-					// register event name with time
-					competitor.times[
-						events[Object.keys(competitor.times).length - 1].name
-					] = Date.now();
-					// change event type for icon
-					setEvent(events[Object.keys(competitor.times).length - 1]);
-
-					if (event.name === events[events.length - 2].name) {
-						setEvent({ type: 'flag-checkered' });
-						setIsDisabled(true);
-						competitor.times.stop = Date.now();
-						let laps = calculateTimes(competitor.times);
-						dataStore.results.push({
-							name: competitor.name,
-							number: competitor.number,
-							results: laps,
-						});
-						dataStore.results.sort(
-							(a, b) => a.results.overall - b.results.overall
-						);
-					}
-				}
-			});
+		if (competitor.times.startTime) {
+			competitor.times[
+				events[Object.keys(competitor.times).length - 1].name
+			] = Date.now();
+			// change event type for icon
+			setEvent(events[Object.keys(competitor.times).length - 1]);
+			// if finished last event
+			if (event.name === events[events.length - 2].name) {
+				setEvent({ type: 'flag-checkered' });
+				setIsDisabled(true);
+				// add stop time
+				competitor.times.stop = Date.now();
+				// calculate times and store results
+				let laps = calculateTimes(competitor.times);
+				dataStore.results.push({
+					name: competitor.name,
+					number: competitor.number,
+					results: laps,
+				});
+				dataStore.results.sort(
+					(a, b) => a.results.overall - b.results.overall
+				);
+			}
 		}
 	};
 

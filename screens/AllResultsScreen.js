@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+	Button,
 	SafeAreaView,
 	StyleSheet,
 	Text,
@@ -7,7 +8,7 @@ import {
 	View,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { getData, storeData } from '../localStorage';
+import { getData, clearResults } from '../localStorage';
 import { convertDate, moderateScale } from '../utils';
 
 export default function AllResultsScreen({ navigation }) {
@@ -18,8 +19,10 @@ export default function AllResultsScreen({ navigation }) {
 		});
 		return unsubscribe;
 	}, [navigation]);
+
 	const loadResults = async () => {
 		let results = await getData('results');
+		if (!results) return;
 		results.sort((a, b) => a.date - b.date);
 		setAllResults(results);
 	};
@@ -46,6 +49,7 @@ export default function AllResultsScreen({ navigation }) {
 					item.date + '_' + index.toString()
 				}
 			/>
+			{/* <Button title="clear results" onPress={() => clearResults()} /> */}
 		</SafeAreaView>
 	);
 }

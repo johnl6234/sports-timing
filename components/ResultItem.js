@@ -1,20 +1,11 @@
-import {
-	Button,
-	FlatList,
-	SafeAreaView,
-	ScrollView,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { convertMsToTime, moderateScale } from '../utils';
 
 const ResultItem = ({ result, onPress, index }) => (
 	<TouchableOpacity style={styles.item} onPress={onPress}>
 		<View style={styles.positionView}>
-			<Text style={styles.position}>{index}</Text>
+			<Text style={styles.position}>{result.position}</Text>
 		</View>
 		<View style={styles.nameView}>
 			<Text style={styles.title}>{result.name}</Text>
@@ -25,7 +16,7 @@ const ResultItem = ({ result, onPress, index }) => (
 			</Text>
 		</View>
 		<View style={styles.numberView}>
-			<Text style={styles.number}>No:</Text>
+			<Text style={styles.number}>Bib No:</Text>
 			<Text style={styles.number}>{result.number}</Text>
 		</View>
 	</TouchableOpacity>
