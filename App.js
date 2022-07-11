@@ -4,7 +4,6 @@ import * as React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
@@ -17,6 +16,7 @@ import AddCompetitorScreen from './screens/AddCompetitorScreen';
 import SetUpRaceScreen from './screens/SetUpRace';
 import AllResultsScreen from './screens/AllResultsScreen';
 import ResultsByDateScreen from './screens/ResultsByDateScreen';
+import CompetitorListScreen from './screens/CompetitorListScreen';
 
 import { getCompetitorData } from './localStorage';
 import { moderateScale } from './utils';
@@ -142,6 +142,13 @@ function App() {
 					}}
 					name="ResultsStack"
 					component={ResultsStack}
+				/>
+				<Drawer.Screen
+					options={{
+						title: 'Competitors',
+					}}
+					name="CompetitorsList"
+					component={CompetitorListScreen}
 				/>
 			</Drawer.Navigator>
 		</NavigationContainer>

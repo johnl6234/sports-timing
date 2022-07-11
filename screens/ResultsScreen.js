@@ -12,7 +12,7 @@ import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
 
 import { convertMsToTime, moderateScale } from '../utils';
-import dataStore from '../Data';
+import dataStore from '../dataStore';
 import ResultItem from '../components/ResultItem';
 import { addToResults } from '../localStorage';
 import CustomButton from '../components/CustomButton';
@@ -22,10 +22,11 @@ export default function ResultsScreen({ navigation }) {
 	const [refresh, setRefresh] = useState(true);
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
+			results.forEach((res, index) => {
+				res.position = index + 1;
+			});
 			setRefresh(refresh => !refresh);
 		});
-
-		// Return the function to unsubscribe from the event so it gets removed on unmount
 		return unsubscribe;
 	}, [navigation]);
 	const renderItem = ({ item, index }) => (
@@ -100,10 +101,9 @@ export default function ResultsScreen({ navigation }) {
 		};
 		let done = await addToResults(saveData);
 		if (done === true) {
-			dataStore[dataStore.startType].competitors.forEach(
-				comp => (comp.racing = false)
-			);
+			dataStore.competitorList.forEach(comp => (comp.racing = false));
 			dataStore.competitors = [];
+			dataStore.startType = '';
 			dataStore.results = [];
 			navigation.navigate('setUpRace');
 		}

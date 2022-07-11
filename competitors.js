@@ -1,4 +1,4 @@
-[
+const competitorList = [
 	{ name: 'Leighton Brack', number: 1, racing: false },
 	{ name: 'Derek Brown', number: 2, racing: false },
 	{ name: 'Rachel Darling Love', number: 3, racing: false },
@@ -72,3 +72,9 @@
 	{ name: 'Richard North', number: 71, racing: false },
 	{ name: 'Gaynor Sidard', number: 72, racing: false },
 ];
+
+export default competitorList;
+
+export function setCompetitors(data) {
+	competitorList = data;
+}

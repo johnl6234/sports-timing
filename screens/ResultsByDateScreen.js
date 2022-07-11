@@ -20,6 +20,7 @@ export default function ResultsByDateScreen({ navigation, route }) {
 				</Text>
 			</View>
 		);
+
 		return (
 			<View style={styles.details}>
 				<View style={styles.nameView}>
@@ -33,6 +34,7 @@ export default function ResultsByDateScreen({ navigation, route }) {
 			</View>
 		);
 	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<Text style={styles.title}>{convertDate(results.date)}</Text>

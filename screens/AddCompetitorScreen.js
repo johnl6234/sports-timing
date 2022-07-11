@@ -11,19 +11,19 @@ import {
 	View,
 } from 'react-native';
 import CustomButton from '../components/CustomButton';
-import dataStore from '../Data';
+import dataStore from '../dataStore';
 import { storeData } from '../localStorage';
 import { moderateScale } from '../utils';
+import competitorList from '../competitors';
+
 export default function AddCompetitorScreen({ navigation }) {
 	const [text, onChangeText] = useState('');
 	const [number, onChangeNumber] = useState(null);
-	const [data, setData] = useState(
-		dataStore[dataStore.startType].competitors
-	);
+	const [data, setData] = useState(dataStore.competitorList);
 	const [message, setMessage] = useState('');
 	const [refresh, setRefresh] = useState(true);
 	useEffect(() => {
-		setData(dataStore[dataStore.startType].competitors);
+		setData(dataStore.competitorList);
 	});
 
 	useEffect(() => {
@@ -36,38 +36,33 @@ export default function AddCompetitorScreen({ navigation }) {
 
 	const AddName = () => {
 		if (text !== '' && number !== null) {
-			let index = dataStore[dataStore.startType].competitors.findIndex(
+			let index = dataStore.competitorList.findIndex(
 				comp => comp.number == number
 			);
 			if (index < 0) {
-				dataStore[dataStore.startType].competitors.push({
+				dataStore.competitorList.push({
 					name: text,
 					number: number,
 					racing: true,
 				});
-				dataStore[dataStore.startType].competitors.sort(
-					(a, b) => a.number - b.number
-				);
-				setData(dataStore[dataStore.startType].competitors);
+				dataStore.competitorList.sort((a, b) => a.number - b.number);
+				setData(dataStore.competitorList);
 				setMessage('');
 			} else {
 				setMessage('Number already in use');
 			}
 			onChangeText('');
 			onChangeNumber(null);
-			storeData(
-				dataStore.startType,
-				dataStore[dataStore.startType].competitors
-			);
+			storeData('competitors', dataStore.competitorList);
 		}
 	};
 	const toggleRacing = number => {
-		let index = dataStore[dataStore.startType].competitors.findIndex(
+		let index = dataStore.competitorList.findIndex(
 			comp => comp.number === number
 		);
-		dataStore[dataStore.startType].competitors[index].racing =
-			!dataStore[dataStore.startType].competitors[index].racing;
-		setData(dataStore[dataStore.startType].competitors);
+		dataStore.competitorList[index].racing =
+			!dataStore.competitorList[index].racing;
+		setData(dataStore.competitorList);
 		setRefresh(refresh => !refresh);
 	};
 
@@ -82,10 +77,10 @@ export default function AddCompetitorScreen({ navigation }) {
 		]);
 	};
 	const removeNumber = number => {
-		let index = dataStore[dataStore.startType].competitors.findIndex(
+		let index = dataStore.competitorList.findIndex(
 			comp => comp.number === number
 		);
-		dataStore[dataStore.startType].competitors.splice(index, 1);
+		dataStore.competitorList.splice(index, 1);
 		setRefresh(refresh => !refresh);
 	};
 	const renderItem = ({ item }) => (

@@ -12,15 +12,16 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-import dataStore from '../Data';
+import dataStore from '../dataStore';
 import CustomButton from '../components/CustomButton';
 import { moderateScale } from '../utils';
+import competitorList from '../competitors';
 
 export default function SetUpRace({ navigation }) {
 	const [text, onChangeText] = useState('');
 	const [type, setType] = useState(null);
 	const [events, setEvents] = useState([]);
-	const [startType, setStartType] = useState(dataStore.startType);
+	const [startType, setStartType] = useState();
 
 	const toggleStartType = startType => {
 		setStartType(startType);
@@ -36,9 +37,12 @@ export default function SetUpRace({ navigation }) {
 				{ name: 'Bike', type: 'bicycle' },
 			]);
 		}
-		dataStore.startType = startType;
 	};
 
+	const clearEvents = () => {
+		setEvents([]);
+		setStartType('');
+	};
 	const AddEvent = () => {
 		let newEvents = events;
 		if (text !== '' && type !== null) {
@@ -58,9 +62,7 @@ export default function SetUpRace({ navigation }) {
 			type: 'stop',
 		});
 		dataStore.events = newEvents;
-		dataStore[dataStore.startType].competitors.sort(
-			(a, b) => a.number - b.number
-		);
+		dataStore.competitorList.sort((a, b) => a.number - b.number);
 		navigation.navigate('addCompetitor');
 	};
 	const renderItem = ({ item }) => (
@@ -73,24 +75,26 @@ export default function SetUpRace({ navigation }) {
 		<SafeAreaView style={styles.container}>
 			<StatusBar style="light" />
 			<View style={styles.row}>
-				<TouchableOpacity
+				<CustomButton
+					title="Cliff Pratt"
+					onPress={() => toggleStartType('cliffPratt')}
 					style={
 						startType === 'cliffPratt'
 							? styles.active
 							: styles.button
 					}
-					onPress={() => toggleStartType('cliffPratt')}>
-					<Text style={styles.text}>Cliff Pratt</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
+					textStyle={styles.text}
+				/>
+				<CustomButton
+					title="humber Runner"
+					onPress={() => toggleStartType('humberRunner')}
 					style={
 						startType === 'humberRunner'
 							? styles.active
 							: styles.button
 					}
-					onPress={() => toggleStartType('humberRunner')}>
-					<Text style={styles.text}>humber Runner</Text>
-				</TouchableOpacity>
+					textStyle={styles.text}
+				/>
 			</View>
 			<Text style={styles.text}>Event name</Text>
 			<TextInput
@@ -102,18 +106,40 @@ export default function SetUpRace({ navigation }) {
 			/>
 			<Text style={styles.text}>Event type</Text>
 			<Picker
-				style={styles.input}
+				style={styles.picker}
 				selectedValue={type}
 				onValueChange={(itemValue, itemIndex) => setType(itemValue)}>
-				<Picker.Item label="Swim" value="swimmer" />
-				<Picker.Item label="Cycle" value="bicycle" />
-				<Picker.Item label="Run" value="running" />
+				<Picker.Item
+					style={styles.pickerItem}
+					label="-- Choose Event Type --"
+				/>
+				<Picker.Item
+					style={styles.pickerItem}
+					label="Swim"
+					value="swimmer"
+				/>
+				<Picker.Item
+					style={styles.pickerItem}
+					label="Cycle"
+					value="bicycle"
+				/>
+				<Picker.Item
+					style={styles.pickerItem}
+					label="Run"
+					value="running"
+				/>
 			</Picker>
 			<View style={styles.buttonContainer}>
 				<CustomButton
 					title="Add Event"
 					onPress={AddEvent}
 					style={styles.finishButton}
+					textStyle={styles.buttonText}
+				/>
+				<CustomButton
+					title="Clear Events"
+					onPress={clearEvents}
+					style={styles.clearButton}
 					textStyle={styles.buttonText}
 				/>
 			</View>
@@ -149,6 +175,21 @@ const styles = StyleSheet.create({
 		color: '#BBBBBB',
 		borderColor: '#BBBBBB',
 		borderRadius: 10,
+	},
+	picker: {
+		margin: 12,
+		paddingLeft: 20,
+		borderWidth: 1,
+		backgroundColor: '#5d6a80',
+		borderRadius: 10,
+	},
+	pickerItem: {
+		width: '90%',
+		marginLeft: 20,
+		textAlign: 'center',
+		fontWeight: 'bold',
+		borderRadius: 10,
+		fontSize: moderateScale(20),
 	},
 	text: {
 		color: '#BBBBBB',
@@ -186,6 +227,13 @@ const styles = StyleSheet.create({
 	},
 	finishButton: {
 		backgroundColor: '#18978F',
+		paddingHorizontal: 30,
+		paddingVertical: 15,
+		borderRadius: moderateScale(20),
+	},
+	clearButton: {
+		marginLeft: 10,
+		backgroundColor: 'rgb(255,0,0)',
 		paddingHorizontal: 30,
 		paddingVertical: 15,
 		borderRadius: moderateScale(20),

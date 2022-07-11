@@ -14,7 +14,7 @@ export function convertMsToTime(milliseconds) {
 	)}`;
 }
 
-import dataStore from '../Data';
+import dataStore from '../dataStore';
 export const calculateTimes = times => {
 	let newEvents = [{ name: 'startTime' }, ...dataStore.events];
 	let laps;

@@ -1,17 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import dataStore from '../Data';
+import dataStore from '../dataStore';
+import competitorList from '../competitors';
 
 export const getCompetitorData = async () => {
-	let prattResults = await getData('cliffPratt');
-	if (prattResults !== null) {
-		prattResults.forEach(element => {
+	let savedCompetitors = await getData('competitors');
+	if (savedCompetitors !== null) {
+		savedCompetitors.forEach(element => {
 			element.racing = false;
 		});
-		dataStore.cliffPratt.competitors = prattResults;
-	}
-	let humberResults = await getData('humberRunner');
-	if (humberResults !== null) {
-		dataStore.humberRunner.competitors = humberResults;
+		dataStore.competitorList = savedCompetitors;
+	} else {
+		dataStore.competitorList = competitorList;
 	}
 };
 export const storeData = async (key, value) => {
