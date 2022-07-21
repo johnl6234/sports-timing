@@ -8,15 +8,13 @@ import {
 	StyleSheet,
 	View,
 } from 'react-native';
-import * as MediaLibrary from 'expo-media-library';
-import * as FileSystem from 'expo-file-system';
 
 import { convertMsToTime, moderateScale } from '../utils';
 import dataStore from '../dataStore';
 import ResultItem from '../components/ResultItem';
 import { addToResults } from '../localStorage';
 import CustomButton from '../components/CustomButton';
-
+import { createCSV, saveFile } from '../utils/savefiles';
 export default function ResultsScreen({ navigation }) {
 	const [results, setResults] = useState(dataStore.results);
 	const [refresh, setRefresh] = useState(true);
@@ -56,56 +54,29 @@ export default function ResultsScreen({ navigation }) {
 			]
 		);
 	};
-	const saveResults = async () => {
-		let csvHeader = 'name,number,';
-		dataStore.events.forEach(event => {
-			if (event.name !== 'stop') {
-				csvHeader += event.name + ',';
-			}
-		});
-		csvHeader += 'overall\n';
-		let csv = '';
-		dataStore.results.forEach(res => {
-			csv += res.name + ',';
-			csv += res.number + ',';
-			for (let i = 0; i < dataStore.events.length; i++) {
-				if (dataStore.events[i].name == 'stop') break;
-				//check results for DNF
-				if (
-					!isNaN(res.results[dataStore.events[i].name]) &&
-					res.results[dataStore.events[i].name] !== 'DNF'
-				) {
-					csv +=
-						convertMsToTime(res.results[dataStore.events[i].name]) +
-						',';
-				} else {
-					csv += 'DNF,';
-				}
-			}
-			//check overall for DNF
-			if (res.results.overall !== 'DNF') {
-				csv += convertMsToTime(res.results.overall) + '\n';
-			} else {
-				csv += res.results.overall + '\n';
-			}
-		});
 
-		csvHeader += csv;
-		let date = new Date(Date.now()).toISOString().split('T');
-		let newDate = date[0].split('-').join('');
-		saveFile(newDate, csvHeader);
-		let saveData = {
-			date: newDate,
-			type: dataStore.startType,
-			results: dataStore.results,
-		};
+	const alertError = message => {
+		Alert.alert('Error', message || 'Data failed to export', [
+			{ text: 'Cancel', style: 'cancel', onPress: () => {} },
+			{
+				text: 'Try Again',
+				style: 'destructive',
+				onPress: saveFile,
+			},
+		]);
+	};
+	const saveResults = async () => {
+		let saveData = await createCSV();
 		let done = await addToResults(saveData);
-		if (done === true) {
+		if (saveData.status && done) {
 			dataStore.competitorList.forEach(comp => (comp.racing = false));
 			dataStore.competitors = [];
 			dataStore.startType = '';
 			dataStore.results = [];
+			dataStore.events = [];
 			navigation.navigate('setUpRace');
+		} else {
+			alertError(saveData);
 		}
 	};
 
@@ -128,17 +99,6 @@ export default function ResultsScreen({ navigation }) {
 		</SafeAreaView>
 	);
 }
-
-const saveFile = async (filename, file) => {
-	const { status } = await MediaLibrary.getPermissionsAsync();
-	if (status === 'granted') {
-		let fileUri = FileSystem.documentDirectory + filename + '.csv';
-		await FileSystem.writeAsStringAsync(fileUri, file, {
-			encoding: FileSystem.EncodingType.UTF8,
-		});
-		await MediaLibrary.createAssetAsync(fileUri);
-	}
-};
 
 const styles = StyleSheet.create({
 	container: {

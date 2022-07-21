@@ -71,6 +71,10 @@ const competitorList = [
 	{ name: 'Charlotte Shermai', number: 70, racing: false },
 	{ name: 'Richard North', number: 71, racing: false },
 	{ name: 'Gaynor Sidard', number: 72, racing: false },
+	{ name: 'Natalie Angelopoulos', number: 73, racing: false },
+	{ name: 'Russ Smith', number: 74, racing: false },
+	{ name: 'Steve Braun', number: 75, racing: false },
+	{ name: 'Pawel Zurek', number: 76, racing: false },
 ];
 
 export default competitorList;

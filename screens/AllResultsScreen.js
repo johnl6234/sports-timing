@@ -35,7 +35,7 @@ export default function AllResultsScreen({ navigation }) {
 					navigation.navigate('resultByDate', { results: item })
 				}>
 				<Text style={styles.text}>
-					{convertDate(item.date.toString())}
+					{item.date ? convertDate(item.date.toString()) : 'no date'}
 				</Text>
 			</TouchableOpacity>
 		);

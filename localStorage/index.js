@@ -18,7 +18,7 @@ export const storeData = async (key, value) => {
 		const jsonValue = JSON.stringify(value);
 		await AsyncStorage.setItem(key, jsonValue);
 	} catch (e) {
-		// saving error
+		return "Error couldn't save data";
 	}
 };
 
@@ -27,7 +27,7 @@ export const getData = async key => {
 		const jsonValue = await AsyncStorage.getItem(key);
 		return jsonValue != null ? JSON.parse(jsonValue) : null;
 	} catch (e) {
-		// error reading value
+		return "Error couldn't retrieve data";
 	}
 };
 

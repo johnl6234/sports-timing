@@ -1,11 +1,22 @@
 import { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import CustomButton from '../components/CustomButton';
 import { convertDate, convertMsToTime, moderateScale } from '../utils';
+import { createCSV } from '../utils/savefiles';
 
 export default function ResultsByDateScreen({ navigation, route }) {
 	const [results, setResults] = useState(route.params.results);
-
+	const alertError = (message, type) => {
+		Alert.alert(type, message, [
+			{ text: 'Cancel', style: 'cancel', onPress: () => {} },
+			{
+				// text: 'Try Again',
+				// style: 'destructive',
+				// onPress: () => {},
+			},
+		]);
+	};
 	const renderItem = ({ item }) => {
 		let newLaps = [];
 
@@ -37,6 +48,14 @@ export default function ResultsByDateScreen({ navigation, route }) {
 		);
 	};
 
+	const exportData = async () => {
+		let res = await createCSV(results);
+		if (!res.status) {
+			alertError(res.message, 'Error');
+		} else {
+			alertError('Data Exported Successfully', 'Success');
+		}
+	};
 	return (
 		<SafeAreaView style={styles.container}>
 			<Text style={styles.title}>{convertDate(results.date)}</Text>
@@ -44,6 +63,12 @@ export default function ResultsByDateScreen({ navigation, route }) {
 				data={results.results}
 				renderItem={renderItem}
 				keyExtractor={item => item.number}
+			/>
+			<CustomButton
+				style={styles.button}
+				textStyle={styles.buttonText}
+				onPress={exportData}
+				title="Export Results"
 			/>
 		</SafeAreaView>
 	);
@@ -90,5 +115,16 @@ const styles = StyleSheet.create({
 		padding: moderateScale(8),
 		marginBottom: 5,
 		borderRadius: 10,
+	},
+	button: {
+		marginTop: 10,
+		backgroundColor: '#18978F',
+		paddingHorizontal: 30,
+		paddingVertical: 15,
+		borderRadius: 20,
+	},
+	buttonText: {
+		fontSize: moderateScale(15),
+		color: 'white',
 	},
 });
