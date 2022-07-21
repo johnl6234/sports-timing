@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import dataStore from '../dataStore';
 import { moderateScale } from '../utils';
 import { palette } from '../utils/globalStyle';
 
@@ -22,11 +23,12 @@ export default function StopWatch({ startClock }) {
 		let interval = null;
 		if (isActive) {
 			interval = setInterval(() => {
-				setSeconds(seconds => seconds + 1);
-				if (seconds >= 60) {
-					setMinutes(minutes => minutes + 1);
-					setSeconds(0);
-				}
+				let endTime = new Date();
+				let timeDiff = endTime - dataStore.startTime;
+				timeDiff /= 1000;
+
+				setSeconds(Math.floor(timeDiff % 60));
+				setMinutes(Math.floor(timeDiff / 60));
 			}, 1000);
 		}
 		return () => clearInterval(interval);
