@@ -5,13 +5,17 @@ import { convertMsToTime } from '.';
 
 const saveFile = async (fileName, file) => {
 	const fileUri = `${FileSystem.documentDirectory}${fileName}.csv`;
+	const createdFile = FileSystem.writeAsStringAsync(fileUri, file, {
+		encoding: FileSystem.EncodingType.UTF8,
+	});
+	crossOriginIsolated.log('created', createdFile);
 	const { status } = await MediaLibrary.requestPermissionsAsync(false);
 	if (status === 'granted') {
 		try {
 			await MediaLibrary.createAssetAsync(fileUri);
 			return { status: true };
 		} catch (e) {
-			console.log('error', e);
+			return { status: false, message: e };
 		}
 	}
 };
