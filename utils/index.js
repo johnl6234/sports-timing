@@ -37,7 +37,6 @@ export const calculateTimes = times => {
 };
 
 export const convertDate = str => {
-	console.log('str', str);
 	let date = str.split('');
 	date.splice(4, 0, '/');
 	date.splice(7, 0, '/');

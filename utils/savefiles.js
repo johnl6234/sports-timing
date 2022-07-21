@@ -5,10 +5,9 @@ import { convertMsToTime } from '.';
 
 const saveFile = async (fileName, file) => {
 	const fileUri = `${FileSystem.documentDirectory}${fileName}.csv`;
-	const createdFile = FileSystem.writeAsStringAsync(fileUri, file, {
+	await FileSystem.writeAsStringAsync(fileUri, file, {
 		encoding: FileSystem.EncodingType.UTF8,
 	});
-	crossOriginIsolated.log('created', createdFile);
 	const { status } = await MediaLibrary.requestPermissionsAsync(false);
 	if (status === 'granted') {
 		try {
@@ -23,7 +22,18 @@ const saveFile = async (fileName, file) => {
 const createCSV = async data => {
 	if (data) {
 		dataStore.results = data.results;
-		dataStore.events = data.events;
+		if (data.type === 'humberRunner') {
+			dataStore.events = [
+				{ name: 'Run 1', type: 'running' },
+				{ name: 'Bike', type: 'bicycle' },
+				{ name: 'Run 2', type: 'running' },
+			];
+		} else if (data.type === 'cliffPratt') {
+			dataStore.events = [
+				{ name: 'Run 1', type: 'running' },
+				{ name: 'Bike', type: 'bicycle' },
+			];
+		}
 		dataStore.type = data.type;
 	}
 
@@ -67,7 +77,6 @@ const createCSV = async data => {
 		let date = new Date(Date.now()).toISOString().split('T');
 		newDate = date[0].split('-').join('');
 	}
-	console.log('csv', csvHeader);
 	let saved = await saveFile(newDate, csvHeader);
 	return {
 		status: saved.status,
