@@ -67,7 +67,7 @@ const createCSV = async data => {
 		let date = new Date(Date.now()).toISOString().split('T');
 		newDate = date[0].split('-').join('');
 	}
-
+	console.log('csv', csvHeader);
 	let saved = await saveFile(newDate, csvHeader);
 	return {
 		status: saved.status,
