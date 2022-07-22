@@ -30,14 +30,14 @@ const test = {
 	],
 	results: [
 		{
-			lapTimes: {
-				'lap-1': 0,
-				'lap-2': 0,
-				'lap-3': 0,
-				overall: 0,
+			name: 'Derek Brown',
+			number: 2,
+			position: 1,
+			results: {
+				Bike: 5798,
+				'Run 1': 4591,
+				overall: 10394,
 			},
-			name: 'testName 22',
-			number: 22,
 		},
 	],
 };

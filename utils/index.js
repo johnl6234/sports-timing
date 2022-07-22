@@ -21,7 +21,7 @@ export const calculateTimes = times => {
 	// if timer stopped for racer overall time == stop - start in ms
 	if ('stop' in times) {
 		laps = {
-			overall: times.stop - times.startTime,
+			overall: { time: times.stop - times.startTime },
 		};
 	} else {
 		laps = {
@@ -30,8 +30,9 @@ export const calculateTimes = times => {
 	}
 	for (let i = 1; i < newEvents.length - 1; i++) {
 		// for each event listed including start(0) and stop(length -1) times
-		laps[newEvents[i].name] =
-			times[newEvents[i].name] - times[newEvents[i - 1].name];
+		laps[newEvents[i].name] = {
+			time: times[newEvents[i].name] - times[newEvents[i - 1].name],
+		};
 	}
 	return laps;
 };

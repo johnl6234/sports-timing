@@ -49,7 +49,7 @@ export default function AllResultsScreen({ navigation }) {
 					item.date + '_' + index.toString()
 				}
 			/>
-			{/* <Button title="clear results" onPress={() => clearResults()} /> */}
+			<Button title="clear results" onPress={() => clearResults()} />
 		</SafeAreaView>
 	);
 }
