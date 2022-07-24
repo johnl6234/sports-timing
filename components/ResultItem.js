@@ -5,14 +5,16 @@ import { convertMsToTime, moderateScale } from '../utils';
 const ResultItem = ({ result, onPress, index }) => (
 	<TouchableOpacity style={styles.item} onPress={onPress}>
 		<View style={styles.positionView}>
-			<Text style={styles.position}>{result.position}</Text>
+			<Text style={styles.position}>
+				{result.results.overall.position}
+			</Text>
 		</View>
 		<View style={styles.nameView}>
 			<Text style={styles.title}>{result.name}</Text>
 			<Text style={styles.time}>
 				{result.results.overall === 'DNF'
 					? result.results.overall
-					: convertMsToTime(result.results.overall)}
+					: convertMsToTime(result.results.overall.time)}
 			</Text>
 		</View>
 		<View style={styles.numberView}>

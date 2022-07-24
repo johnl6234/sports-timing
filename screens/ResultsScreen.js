@@ -14,15 +14,13 @@ import dataStore from '../dataStore';
 import ResultItem from '../components/ResultItem';
 import { addToResults } from '../localStorage';
 import CustomButton from '../components/CustomButton';
-import { createCSV, saveFile } from '../utils/savefiles';
+import { createCSV, saveFile, assignLapPositions } from '../utils/savefiles';
 export default function ResultsScreen({ navigation }) {
 	const [results, setResults] = useState(dataStore.results);
 	const [refresh, setRefresh] = useState(true);
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			results.forEach((res, index) => {
-				res.position = index + 1;
-			});
+			assignLapPositions();
 			setRefresh(refresh => !refresh);
 		});
 		return unsubscribe;

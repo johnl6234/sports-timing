@@ -84,7 +84,7 @@ export default function RaceScreen({ navigation }) {
 		let list = startGroup.map(comp => comp); // list of runners to set off
 		let buttonList = groupButtons.map(butt => butt); // buttons of runners
 		setStartClock(true);
-		dataStore.startTime = new Date();
+		if (!dataStore.startTime) dataStore.startTime = new Date();
 		// create competitor buttons
 		list.forEach(competitor => {
 			competitor.times = { startTime: Date.now() };

@@ -1,8 +1,8 @@
 {
     "expo": {
-        "name": "sports-timing",
-        "slug": "sports-timing",
-        "version": "2.0.5",
+        "name": "barracuda-timing",
+        "slug": "barracuda-timing",
+        "version": "2.1.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "userInterfaceStyle": "light",
@@ -25,7 +25,7 @@
                 "foregroundImage": "./assets/adaptive-icon.png",
                 "backgroundColor": "#FFFFFF"
             },
-            "package": "com.johnl6234.sportstiming"
+            "package": "com.johnl6234.barracudatiming"
         },
         "web": {
             "favicon": "./assets/favicon.png"

@@ -22,51 +22,45 @@ const saveFile = async (fileName, file) => {
 const createCSV = async data => {
 	if (data) {
 		dataStore.results = data.results;
-		if (data.type === 'humberRunner') {
-			dataStore.events = [
-				{ name: 'Run 1', type: 'running' },
-				{ name: 'Bike', type: 'bicycle' },
-				{ name: 'Run 2', type: 'running' },
-			];
-		} else if (data.type === 'cliffPratt') {
-			dataStore.events = [
-				{ name: 'Run 1', type: 'running' },
-				{ name: 'Bike', type: 'bicycle' },
-			];
-		}
+		dataStore.events = data.events;
 		dataStore.type = data.type;
 	}
 
-	let csvHeader = 'name,number,';
+	let csvHeader = 'name,bib number,';
 	dataStore.events.forEach(event => {
 		if (event.name !== 'stop') {
 			csvHeader += event.name + ',';
+			csvHeader += 'pos,';
 		}
 	});
-	csvHeader += 'overall\n';
+	csvHeader += 'overall,pos\n';
 	let csv = '';
 	dataStore.results.forEach(res => {
 		csv += res.name + ',';
 		csv += res.number + ',';
 		for (let i = 0; i < dataStore.events.length; i++) {
 			if (dataStore.events[i].name == 'stop') break;
+
 			//check results for DNF
 			if (
-				!isNaN(res.results[dataStore.events[i].name]) &&
-				res.results[dataStore.events[i].name] !== 'DNF'
+				!isNaN(res.results[dataStore.events[i].name].time) &&
+				res.results[dataStore.events[i].name].time !== 'DNF'
 			) {
 				csv +=
-					convertMsToTime(res.results[dataStore.events[i].name]) +
-					',';
+					convertMsToTime(
+						res.results[dataStore.events[i].name].time
+					) + ',';
+				csv += res.results[dataStore.events[i].name].position + ',';
 			} else {
-				csv += 'DNF,';
+				csv += 'DNF,,';
 			}
 		}
 		//check overall for DNF
-		if (res.results.overall !== 'DNF') {
-			csv += convertMsToTime(res.results.overall) + '\n';
+		if (res.results.overall.time !== 'DNF') {
+			csv += convertMsToTime(res.results.overall.time) + ',';
+			csv += res.results.overall.position + '\n';
 		} else {
-			csv += res.results.overall + '\n';
+			csv += res.results.overall.time + ',\n';
 		}
 	});
 	let newDate;
@@ -77,6 +71,7 @@ const createCSV = async data => {
 		let date = new Date(Date.now()).toISOString().split('T');
 		newDate = date[0].split('-').join('');
 	}
+	// create local csv file
 	let saved = await saveFile(newDate, csvHeader);
 	return {
 		status: saved.status,
@@ -86,4 +81,28 @@ const createCSV = async data => {
 		events: dataStore.events,
 	};
 };
-export { saveFile, createCSV };
+
+const assignLapPositions = () => {
+	for (let i = 0; i < dataStore.events.length; i++) {
+		if (dataStore.events[i].name == 'stop') break;
+		dataStore.results.sort(
+			(a, b) =>
+				a.results[dataStore.events[i].name].time -
+				b.results[dataStore.events[i].name].time
+		);
+		dataStore.results.forEach((comp, index) => {
+			comp.results[dataStore.events[i].name] = {
+				...comp.results[dataStore.events[i].name],
+				position: index + 1,
+			};
+		});
+	}
+	dataStore.results.sort(
+		(a, b) => a.results.overall.time - b.results.overall.time
+	);
+	dataStore.results.forEach((comp, index) => {
+		comp.results.overall.position = index + 1;
+	});
+};
+
+export { saveFile, createCSV, assignLapPositions };

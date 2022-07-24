@@ -16,7 +16,6 @@ import dataStore from '../dataStore';
 import CustomButton from '../components/CustomButton';
 import { moderateScale } from '../utils';
 import competitorList from '../competitors';
-
 export default function SetUpRace({ navigation }) {
 	const [text, onChangeText] = useState('');
 	const [type, setType] = useState(null);

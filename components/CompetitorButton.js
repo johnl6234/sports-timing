@@ -34,9 +34,6 @@ const CompetitorButton = props => {
 					number: competitor.number,
 					results: laps,
 				});
-				dataStore.results.sort(
-					(a, b) => a.results.overall - b.results.overall
-				);
 			}
 		}
 	};

@@ -27,8 +27,14 @@ export default function ResultsByDateScreen({ navigation, route }) {
 			<View style={styles.lap} key={item.key}>
 				<Text style={styles.keyText}>{item.key}:</Text>
 				<Text style={styles.text}>
-					{!isNaN(item.value) ? convertMsToTime(item.value) : 'DNF'}
+					{!isNaN(item.value.time)
+						? convertMsToTime(item.value.time)
+						: 'DNF'}
 				</Text>
+				<View style={styles.position}>
+					<Text style={styles.text}>Pos:</Text>
+					<Text style={styles.text}>{item.value.position}</Text>
+				</View>
 			</View>
 		);
 
@@ -37,7 +43,9 @@ export default function ResultsByDateScreen({ navigation, route }) {
 				<View style={styles.nameView}>
 					<Text style={styles.text}> Bib No:{item.number}</Text>
 					<Text style={styles.text}>{item.name}</Text>
-					<Text style={[styles.text]}>Position: {item.position}</Text>
+					<Text style={[styles.text]}>
+						Position: {item.results.overall.position}
+					</Text>
 				</View>
 				<FlatList
 					data={newLaps}
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
 	},
 	lap: {
 		flexDirection: 'row',
-		justifyContent: 'flex-start',
+		justifyContent: 'space-between',
 		backgroundColor: '#0A043C',
 		padding: moderateScale(8),
 		marginBottom: 5,
@@ -126,5 +134,8 @@ const styles = StyleSheet.create({
 	buttonText: {
 		fontSize: moderateScale(15),
 		color: 'white',
+	},
+	position: {
+		flexDirection: 'row',
 	},
 });

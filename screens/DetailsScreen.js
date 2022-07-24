@@ -22,8 +22,14 @@ const DetailsScreen = ({ navigation, route }) => {
 		<View style={styles.lap} key={item.key}>
 			<Text style={styles.keyText}>{item.key}:</Text>
 			<Text style={styles.text}>
-				{!isNaN(item.value) ? convertMsToTime(item.value) : 'DNF'}
+				{!isNaN(item.value.time)
+					? convertMsToTime(item.value.time)
+					: 'DNF'}
 			</Text>
+			<View style={styles.position}>
+				<Text style={styles.text}>Pos:</Text>
+				<Text style={styles.text}>{item.value.position}</Text>
+			</View>
 		</View>
 	);
 	return (
@@ -34,7 +40,7 @@ const DetailsScreen = ({ navigation, route }) => {
 				<View style={styles.nameView}>
 					<Text style={styles.text}>{details.name}</Text>
 					<Text style={[styles.text]}>
-						Position: {details.position}
+						Position: {details.results.overall.position}
 					</Text>
 				</View>
 				<FlatList
@@ -84,10 +90,13 @@ const styles = StyleSheet.create({
 	},
 	lap: {
 		flexDirection: 'row',
-		justifyContent: 'flex-start',
+		justifyContent: 'space-between',
 		backgroundColor: '#0A043C',
 		padding: moderateScale(8),
 		marginBottom: 5,
 		borderRadius: 10,
+	},
+	position: {
+		flexDirection: 'row',
 	},
 });
