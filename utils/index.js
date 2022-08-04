@@ -1,6 +1,7 @@
 function padTo2Digits(num) {
 	return num.toString().padStart(2, '0');
 }
+
 export function convertMsToTime(milliseconds) {
 	let seconds = Math.floor(milliseconds / 1000);
 	let minutes = Math.floor(seconds / 60);

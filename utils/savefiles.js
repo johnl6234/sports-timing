@@ -83,25 +83,28 @@ const createCSV = async data => {
 };
 
 const assignLapPositions = () => {
-	for (let i = 0; i < dataStore.events.length; i++) {
-		if (dataStore.events[i].name == 'stop') break;
+	return new Promise(function (resolve, reject) {
+		for (let i = 0; i < dataStore.events.length; i++) {
+			if (dataStore.events[i].name == 'stop') break;
+			dataStore.results.sort(
+				(a, b) =>
+					a.results[dataStore.events[i].name].time -
+					b.results[dataStore.events[i].name].time
+			);
+			dataStore.results.forEach((comp, index) => {
+				comp.results[dataStore.events[i].name] = {
+					...comp.results[dataStore.events[i].name],
+					position: index + 1,
+				};
+			});
+		}
 		dataStore.results.sort(
-			(a, b) =>
-				a.results[dataStore.events[i].name].time -
-				b.results[dataStore.events[i].name].time
+			(a, b) => a.results.overall.time - b.results.overall.time
 		);
 		dataStore.results.forEach((comp, index) => {
-			comp.results[dataStore.events[i].name] = {
-				...comp.results[dataStore.events[i].name],
-				position: index + 1,
-			};
+			comp.results.overall.position = index + 1;
 		});
-	}
-	dataStore.results.sort(
-		(a, b) => a.results.overall.time - b.results.overall.time
-	);
-	dataStore.results.forEach((comp, index) => {
-		comp.results.overall.position = index + 1;
+		resolve();
 	});
 };
 

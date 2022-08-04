@@ -75,6 +75,8 @@ const competitorList = [
 	{ name: 'Russ Smith', number: 74, racing: false },
 	{ name: 'Steve Braun', number: 75, racing: false },
 	{ name: 'Pawel Zurek', number: 76, racing: false },
+	{ name: 'Jill Speight', number: 77, racing: false },
+	{ name: 'Matt Farrier', number: 78, racing: false },
 ];
 
 export default competitorList;

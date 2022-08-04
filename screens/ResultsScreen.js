@@ -20,7 +20,9 @@ export default function ResultsScreen({ navigation }) {
 	const [refresh, setRefresh] = useState(true);
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			assignLapPositions();
+			dataStore.results.sort(
+				(a, b) => a.results.overall.time - b.results.overall.time
+			);
 			setRefresh(refresh => !refresh);
 		});
 		return unsubscribe;
@@ -63,7 +65,9 @@ export default function ResultsScreen({ navigation }) {
 			},
 		]);
 	};
+
 	const saveResults = async () => {
+		await assignLapPositions();
 		let saveData = await createCSV();
 		let done = await addToResults(saveData);
 		if (saveData.status && done) {
