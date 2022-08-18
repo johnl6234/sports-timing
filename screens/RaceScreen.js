@@ -110,13 +110,18 @@ export default function RaceScreen({ navigation }) {
 		setStartGroup(emptyList);
 	};
 	const StopTimer = async () => {
+		// clear buttons
 		setButtons([]);
+		// disable button
 		setIsDisabled(true);
+		// stop clock
 		setStartClock(false);
 		// Add unfinished competitors to results array as DNF
 		let DNFArray = [];
+		// collect all competitors marked as DNF
 		for (let index in dataStore.competitors) {
 			let competitor = dataStore.competitors[index];
+			// calculate laps add DNF to uncompleted laps
 			let laps = calculateTimes(competitor.times);
 			if (laps.overall === 'DNF') {
 				DNFArray.push({
@@ -126,6 +131,7 @@ export default function RaceScreen({ navigation }) {
 				});
 			}
 		}
+		// add DNF to end of results
 		dataStore.results.push(...DNFArray);
 		navigation.navigate('results');
 	};
@@ -134,6 +140,7 @@ export default function RaceScreen({ navigation }) {
 		let list = dataStore.competitorList.filter(
 			comp => comp.racing === false
 		);
+		setShowStart(false);
 		setNonRacers(list);
 	};
 

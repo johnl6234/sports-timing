@@ -1,15 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import {
-	Alert,
-	Button,
-	FlatList,
-	SafeAreaView,
-	StyleSheet,
-	View,
-} from 'react-native';
+import { Alert, FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
 
-import { convertMsToTime, moderateScale } from '../utils';
+import { moderateScale } from '../utils';
 import dataStore from '../dataStore';
 import ResultItem from '../components/ResultItem';
 import { addToResults } from '../localStorage';
@@ -20,10 +13,10 @@ export default function ResultsScreen({ navigation }) {
 	const [refresh, setRefresh] = useState(true);
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			dataStore.results.sort(
-				(a, b) => a.results.overall.time - b.results.overall.time
-			);
-			setRefresh(refresh => !refresh);
+			assignLapPositions().then(() => {
+				setResults(dataStore.results);
+				setRefresh(refresh => !refresh);
+			});
 		});
 		return unsubscribe;
 	}, [navigation]);
@@ -67,7 +60,7 @@ export default function ResultsScreen({ navigation }) {
 	};
 
 	const saveResults = async () => {
-		await assignLapPositions();
+		//await assignLapPositions();
 		let saveData = await createCSV();
 		let done = await addToResults(saveData);
 		if (saveData.status && done) {

@@ -38,7 +38,7 @@ const CompetitorButton = props => {
 		}
 	};
 
-	const markDNF = number => {
+	const markDNF = () => {
 		setEvent({ type: 'stop' });
 		setIsDisabled(true);
 	};
@@ -49,7 +49,7 @@ const CompetitorButton = props => {
 			disabled={isDisabled}
 			style={[styles.button, styles[event.type], props.styles]}
 			onPress={switchSport}
-			onLongPress={() => markDNF(props.number)}>
+			onLongPress={markDNF}>
 			<Icon style={styles.text} name={event.type} />
 			<Text style={styles.text}>{props.number}</Text>
 		</TouchableOpacity>

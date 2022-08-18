@@ -41,7 +41,7 @@ const createCSV = async data => {
 		for (let i = 0; i < dataStore.events.length; i++) {
 			if (dataStore.events[i].name == 'stop') break;
 
-			//check results for DNF
+			//check results for DNF if not a anumber add DNF
 			if (
 				!isNaN(res.results[dataStore.events[i].name].time) &&
 				res.results[dataStore.events[i].name].time !== 'DNF'
@@ -83,14 +83,17 @@ const createCSV = async data => {
 };
 
 const assignLapPositions = () => {
-	return new Promise(function (resolve, reject) {
+	return new Promise(function (resolve) {
+		// for each event
 		for (let i = 0; i < dataStore.events.length; i++) {
 			if (dataStore.events[i].name == 'stop') break;
+			// sort results by event time
 			dataStore.results.sort(
 				(a, b) =>
 					a.results[dataStore.events[i].name].time -
 					b.results[dataStore.events[i].name].time
 			);
+			// add position: index + 1
 			dataStore.results.forEach((comp, index) => {
 				comp.results[dataStore.events[i].name] = {
 					...comp.results[dataStore.events[i].name],
@@ -98,12 +101,28 @@ const assignLapPositions = () => {
 				};
 			});
 		}
+		// split results in to finishers and dnf
+		const finisherArray = dataStore.results.filter(
+			x => x.results.overall !== 'DNF'
+		);
+		const dnfArray = dataStore.results.filter(
+			x => x.results.overall === 'DNF'
+		);
+		// after event positions are done
+		// sort by ovarall time
+		finisherArray.sort(
+			(a, b) => a.results.overall.time - b.results.overall.time
+		);
+		// add position: index + 1
+		finisherArray.forEach((comp, index) => {
+			comp.results.overall.position = index + 1;
+		});
+
+		//merge results
+		dataStore.results = [...finisherArray, ...dnfArray];
 		dataStore.results.sort(
 			(a, b) => a.results.overall.time - b.results.overall.time
 		);
-		dataStore.results.forEach((comp, index) => {
-			comp.results.overall.position = index + 1;
-		});
 		resolve();
 	});
 };

@@ -32,8 +32,13 @@ export const calculateTimes = times => {
 	for (let i = 1; i < newEvents.length - 1; i++) {
 		// for each event listed including start(0) and stop(length -1) times
 		laps[newEvents[i].name] = {
-			time: times[newEvents[i].name] - times[newEvents[i - 1].name],
+			// time: = time time - the previous event time
+			time: isNaN(times[newEvents[i].name] - times[newEvents[i - 1].name])
+				? 'DNF'
+				: times[newEvents[i].name] - times[newEvents[i - 1].name],
 		};
+
+		console.log('laps', laps);
 	}
 	return laps;
 };
