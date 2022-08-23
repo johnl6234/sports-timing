@@ -24,13 +24,13 @@ export default function SetUpRace({ navigation }) {
 
 	const toggleStartType = startType => {
 		setStartType(startType);
-		if (startType === 'humberRunner') {
+		if (startType === 'run/bike/run') {
 			setEvents([
 				{ name: 'Run 1', type: 'running' },
 				{ name: 'Bike', type: 'bicycle' },
 				{ name: 'Run 2', type: 'running' },
 			]);
-		} else if (startType === 'cliffPratt') {
+		} else if (startType === 'run/bike') {
 			setEvents([
 				{ name: 'Run 1', type: 'running' },
 				{ name: 'Bike', type: 'bicycle' },
@@ -72,26 +72,18 @@ export default function SetUpRace({ navigation }) {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<StatusBar style="light" />
+			<StatusBar style='light' />
 			<View style={styles.row}>
 				<CustomButton
-					title="Cliff Pratt"
-					onPress={() => toggleStartType('cliffPratt')}
-					style={
-						startType === 'cliffPratt'
-							? styles.active
-							: styles.button
-					}
+					title='Run/Bike'
+					onPress={() => toggleStartType('run/bike')}
+					style={startType === 'cliffPratt' ? styles.active : styles.button}
 					textStyle={styles.text}
 				/>
 				<CustomButton
-					title="humber Runner"
-					onPress={() => toggleStartType('humberRunner')}
-					style={
-						startType === 'humberRunner'
-							? styles.active
-							: styles.button
-					}
+					title='Run/Bike/Run'
+					onPress={() => toggleStartType('run/bike/run')}
+					style={startType === 'humberRunner' ? styles.active : styles.button}
 					textStyle={styles.text}
 				/>
 			</View>
@@ -100,7 +92,7 @@ export default function SetUpRace({ navigation }) {
 				style={styles.input}
 				onChangeText={onChangeText}
 				value={text}
-				placeholder="event"
+				placeholder='event'
 				placeholderTextColor={'#BBBBBB'}
 			/>
 			<Text style={styles.text}>Event type</Text>
@@ -108,48 +100,29 @@ export default function SetUpRace({ navigation }) {
 				style={styles.picker}
 				selectedValue={type}
 				onValueChange={(itemValue, itemIndex) => setType(itemValue)}>
-				<Picker.Item
-					style={styles.pickerItem}
-					label="-- Choose Event Type --"
-				/>
-				<Picker.Item
-					style={styles.pickerItem}
-					label="Swim"
-					value="swimmer"
-				/>
-				<Picker.Item
-					style={styles.pickerItem}
-					label="Cycle"
-					value="bicycle"
-				/>
-				<Picker.Item
-					style={styles.pickerItem}
-					label="Run"
-					value="running"
-				/>
+				<Picker.Item style={styles.pickerItem} label='-- Choose Event Type --' />
+				<Picker.Item style={styles.pickerItem} label='Swim' value='swimmer' />
+				<Picker.Item style={styles.pickerItem} label='Cycle' value='bicycle' />
+				<Picker.Item style={styles.pickerItem} label='Run' value='running' />
 			</Picker>
 			<View style={styles.buttonContainer}>
 				<CustomButton
-					title="Add Event"
+					title='Add Event'
 					onPress={AddEvent}
 					style={styles.finishButton}
 					textStyle={styles.buttonText}
 				/>
 				<CustomButton
-					title="Clear Events"
+					title='Clear Events'
 					onPress={clearEvents}
 					style={styles.clearButton}
 					textStyle={styles.buttonText}
 				/>
 			</View>
-			<FlatList
-				data={events}
-				renderItem={renderItem}
-				keyExtractor={item => item.name}
-			/>
+			<FlatList data={events} renderItem={renderItem} keyExtractor={item => item.name} />
 			<View style={styles.buttonContainer}>
 				<CustomButton
-					title="FINISH"
+					title='FINISH'
 					onPress={onFinish}
 					style={styles.finishButton}
 					textStyle={styles.buttonText}
